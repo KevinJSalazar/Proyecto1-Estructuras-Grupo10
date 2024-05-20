@@ -80,15 +80,10 @@ public class ArrayList<E> implements List<E>{
     @Override
     public void add(int index, E element){
         if(element==null) throw new NullPointerException();
-        else if(verifyRange(index))throw new IndexOutOfBoundsException();
-        else if(this.isEmpty()){
-            elements[effectiveSize]=element;
-            effectiveSize+=1;
-        }else if(this.isFull()){
-            this.addCapacity();
-        }
-        for(int i=effectiveSize;i>=index;i--){
-            elements[i+1]=elements[i];
+        else if(index<0 || index>effectiveSize) throw new IndexOutOfBoundsException();
+        else if(isFull()) addCapacity();
+        for(int i=effectiveSize;i>index;i--){
+            elements[i]=elements[i-1];
         }
         elements[index]=element;
         effectiveSize++;
@@ -97,7 +92,7 @@ public class ArrayList<E> implements List<E>{
     @Override
     public E remove(int index){
         E eRemove=null;
-        if(this.isEmpty() || verifyRange(index)){
+        if(index<0 || index>=effectiveSize){
             throw new IndexOutOfBoundsException();
         }else{
             eRemove=elements[index];
@@ -119,17 +114,13 @@ public class ArrayList<E> implements List<E>{
     
     @Override
     public E set(int index, E element){
-        if(verifyRange(index)){
+        if(index < 0 || index >= effectiveSize){
             throw new IndexOutOfBoundsException();
         }else{
             E eViejo=elements[index];
             elements[index]=element;
             return eViejo;
         }
-    }
-    
-    private boolean verifyRange(int index){
-        return index<0 || index>=effectiveSize;
     }
     
     private void addCapacity(){
