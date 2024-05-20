@@ -8,32 +8,42 @@ package ec.edu.espol.model;
  *
  * @author USUARIO
  */
-public class OurArrayList<E> implements List<E>{
+public class ArrayList<E> implements List<E>{
     
-    private int capacity=10;
     private E[]elements=null;
-    private int effectiveSize=0;
+    private int capacity=10;
+    private int effectiveSize;
+    
+    public ArrayList(){
+        elements=(E[]) new Object[10];
+        effectiveSize=0;
+    }
     
     @Override
     public boolean addFirst(E e){
         if(e==null) return false;
         else if(isEmpty()){
-            elements[effectiveSize]=e;
-            effectiveSize+=1;
+            elements[0]=e;
+            effectiveSize++;
             return true;
-        }else if(isFull()){
+        }
+        else if(isFull()){
             addCapacity();
         }
-        add(0,e);
+        for(int i=effectiveSize-1;i>=0;i--){
+            elements[i+1]=elements[i];
+        }
+        elements[0]=e;
+        effectiveSize++;
         return true;
     }
     
     @Override
     public boolean addLast(E e){
-        if(e==null) return false;
+       if(e==null) return false;
         else if(isEmpty()){
-            elements[effectiveSize]=e;
-            effectiveSize+=1;
+            elements[0]=e;
+            effectiveSize++; 
             return true;
         }else if(isFull()){
             addCapacity();
@@ -63,7 +73,8 @@ public class OurArrayList<E> implements List<E>{
     
     @Override
     public void clear(){
-        effectiveSize=0;
+            effectiveSize=0;
+            elements=(E []) new Object[capacity];
     }
     
     @Override
@@ -86,11 +97,11 @@ public class OurArrayList<E> implements List<E>{
     @Override
     public E remove(int index){
         E eRemove=null;
-        if(this.isEmpty() || index>effectiveSize || index<0){
+        if(this.isEmpty() || verifyRange(index)){
             throw new IndexOutOfBoundsException();
         }else{
             eRemove=elements[index];
-            for(int i=index;i<this.effectiveSize-1;i++){
+            for(int i=index;index<this.effectiveSize;i++){
                 elements[i]=elements[i+1];
             }
             effectiveSize--;

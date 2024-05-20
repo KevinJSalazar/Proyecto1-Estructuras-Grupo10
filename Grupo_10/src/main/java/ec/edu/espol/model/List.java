@@ -31,7 +31,4 @@ public interface List<E> {
     public E remove(int index);
     
     public E set(int index, E element);
-    
-    public String toString();
-            
 }
