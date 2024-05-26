@@ -10,7 +10,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
@@ -61,20 +60,20 @@ public class Usuario implements Serializable{
 //        return this.correo + "|" + this.clave;
 //    }
 //    
-//    public static void saveListUsuariosSer(List<Usuario> usuarios){
-//        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("usuarios.ser"))){
-//            out.writeObject(usuarios);
-//        } catch(IOException e){}
-//    }
+    public static void saveListUsuariosSer(ArrayList<Usuario> usuarios){
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("usuarios.ser"))){
+            out.writeObject(usuarios);
+        } catch(IOException e){}
+    }
 //    
-//    public static List<Usuario> readFileSer(){
-//        List<Usuario> usuarios = new List<>();
-//        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("usuarios.ser"))){
-//            usuarios = (List<Usuario>)in.readObject();
-//        } catch(ClassNotFoundException c){
-//        } catch(IOException e){}
-//        return usuarios;
-//    }
+    public static List<Usuario> readFileSer(){
+        List<Usuario> usuarios = new ArrayList<Usuario>();
+        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("usuarios.ser"))){
+            usuarios = (List<Usuario>)in.readObject();
+        } catch(ClassNotFoundException c){
+        } catch(IOException e){}
+        return usuarios;
+    }
 //    
 //    public static boolean checkCorreo(List<Usuario> usuarios, String correo){
 //        for(Usuario u : usuarios){
