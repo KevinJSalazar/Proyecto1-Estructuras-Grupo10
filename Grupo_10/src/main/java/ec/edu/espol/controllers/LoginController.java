@@ -45,6 +45,9 @@ public class LoginController implements Initializable {
         String contraseña = (String)this.contraseña.getText();
         if(usuario.isEmpty()|| contraseña.isEmpty()){
             UtileriaMensaje.generarAlertaInfo("Ingreso inválido", "Debe ingresar su usuario y contraseña.");
+        } // Por medios prácticos, simplemente haremos lo siguiente
+        else{
+            UtileriaFunciones.cambiarEscena(event, "dashboard");
         }
     }
 
