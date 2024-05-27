@@ -60,7 +60,7 @@ public class Usuario implements Serializable{
 //        return this.correo + "|" + this.clave;
 //    }
 //    
-    public static void saveListUsuariosSer(List<Usuario> usuarios){
+    public static void saveListUsuariosSer(ArrayList<Usuario> usuarios){
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("usuarios.ser"))){
             out.writeObject(usuarios);
         } catch(IOException e){}
@@ -71,6 +71,7 @@ public class Usuario implements Serializable{
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("usuarios.ser"))){
             usuarios = (List<Usuario>)in.readObject();
         } catch(ClassNotFoundException | IOException c){}
+        
         return usuarios;
     }
 //    

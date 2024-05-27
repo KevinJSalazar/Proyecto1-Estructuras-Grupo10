@@ -10,7 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
+import java.util.Comparator;
 
 /**
  *
@@ -24,6 +24,18 @@ public abstract class Vehiculo implements Serializable{
     protected int año;
     protected double kilometraje;
     protected Usuario usuario;
+    
+    public static class CompararVehiculos implements Comparator<Vehiculo> {
+
+        @Override
+        public int compare(Vehiculo veh1, Vehiculo veh2) {
+            int result = Integer.compare(veh1.precio, veh2.precio);
+            if (result == 0) {
+                result = Double.compare(veh1.kilometraje, veh2.kilometraje);
+            }
+            return result;
+        }
+    }
 
 //    public Vehiculo(String placa, String marca, String modelo, int precio, double kilometraje, Usuario usuario) {
 //        this.placa = placa;
@@ -38,20 +50,20 @@ public abstract class Vehiculo implements Serializable{
 //        return placa;
 //    }
 //    
-//    public static void saveListVehiculosSer(List<Vehiculo> vehiculos){
-//        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("vehiculos.ser"))){
-//            out.writeObject(vehiculos);
-//        } catch(IOException e){}
-//    }
-//    
-//    public static List<Vehiculo> readFileSer(){
-//        List<Vehiculo> vehiculos = new List<>();
-//        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("vehiculos.ser"))){
-//            vehiculos = (List<Vehiculo>)in.readObject();
-//        } catch(ClassNotFoundException c){
-//        } catch(IOException e){}
-//        return vehiculos;
-//    }
+    public static void saveListVehiculosSer(List<Vehiculo> vehiculos){
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("vehiculos.ser"))){
+            out.writeObject(vehiculos);
+        } catch(IOException e){}
+    }
+    
+    public static List<Vehiculo> readFileSer(){
+        List<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
+        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("vehiculos.ser"))){
+            vehiculos = (List<Vehiculo>)in.readObject();
+        } catch(ClassNotFoundException c){
+        } catch(IOException e){}
+        return vehiculos;
+    }
 //    
 //    public static boolean checkPlaca(List<Vehiculo> vehiculos, String placa){
 //        for(Vehiculo v : vehiculos){
