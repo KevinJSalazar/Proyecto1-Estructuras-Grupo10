@@ -57,19 +57,20 @@ public class RegisterController implements Initializable {
         if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contraseña.isEmpty()){
             UtileriaMensaje.generarAlertaInfo("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
         } else{
-            if(UtileriaFunciones.verificarCondiciones(Usuario.verificarCorreo(correo)))
+            if(UtileriaFunciones.verificarCondiciones(Usuario.verificarFirmaCorreo(correo)))
                 UtileriaMensaje.generarAlertaInfo("Correo inválido", "Debe ingresar una dirección de correo válida. No institucional.");
             else if(UtileriaFunciones.verificarCondiciones(Usuario.verificarExtContraseña(contraseña)))
                 UtileriaMensaje.generarAlertaInfo("Contraseña inválida", "Debe ingresar una contraseña entre 8 y 20 caracteres.");
             else if(UtileriaFunciones.verificarCondiciones(repetContraseña.equals(contraseña)))
                 UtileriaMensaje.generarAlertaError("Contraseñas inconsistentes", "Las contraseñas no coinciden.");
+            else{
+                
+            }
             
                 
             
             // Aquí implementar condición del checkCorreo()con la lista de usuario implementada por nosotros
-        }
-        
-        
+        } 
     }
 
     @FXML

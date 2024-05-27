@@ -136,4 +136,12 @@ public class ArrayList<E> implements List<E>{
         return effectiveSize==capacity;
     }
 
+    @Override
+    public boolean contains(E element) {
+        for(int i = 0; i < this.effectiveSize; i++){
+            if(this.elements[i].equals(element))
+                return true;
+        }
+        return false;
+    }
 }

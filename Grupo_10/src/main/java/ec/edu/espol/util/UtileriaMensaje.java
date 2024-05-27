@@ -4,7 +4,9 @@
  */
 package ec.edu.espol.util;
 
+import java.util.Optional;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 
 /**
  *
@@ -23,5 +25,17 @@ public class UtileriaMensaje {
         alerta.setTitle(titulo.toUpperCase());
         alerta.setHeaderText(null);
         alerta.show();
+    }
+    
+    public static boolean generarAlertaConfirmacion(String titulo, String mensaje){
+        Alert alerta = new Alert(Alert.AlertType.CONFIRMATION, mensaje);
+        alerta.setTitle(titulo.toUpperCase());
+        alerta.setHeaderText(null);
+        Optional<ButtonType> decisionBtn = alerta.showAndWait();
+        if(decisionBtn.isPresent()){
+            if(decisionBtn.get() == ButtonType.OK)
+                return true;            
+        }       
+        return false;   
     }
 }

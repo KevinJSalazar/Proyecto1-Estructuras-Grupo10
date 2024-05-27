@@ -10,13 +10,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.util.List;
 
 /**
  *
  * @author evin
  */
 public class Usuario implements Serializable{
+    private List<Vehiculo> vehiculos;
     private String nombre;
     private String apellido;
     private String correo;
@@ -27,26 +27,25 @@ public class Usuario implements Serializable{
         this.apellido = apellido;
         this.correo = correo;
         this.clave = clave;
+        this.vehiculos = new ArrayList<>();
     }
     
-    public static boolean verificarCorreo(String correo){
+    public static boolean verificarFirmaCorreo(String correo){
+        List<String> firmas = new ArrayList<>();
+        firmas.addLast("hotmail.com");firmas.addLast("outlook.com");firmas.addLast("outlook.es");firmas.addLast("gmail.com");
         if(correo.contains("@")){
             String[] parteCorreo = correo.split("@");
-            if(parteCorreo[1].equals("hotmail.com") || parteCorreo[1].equals("outlook.com"))
-                return true;
-            else if(parteCorreo[1].equals("outlook.es") || parteCorreo[1].equals("gmail.com"))
-                return true;
-            return false;
-        } else{
-            return false;
-        } 
+            if(parteCorreo.length >=2 )
+                return firmas.contains(parteCorreo[1]);
+        }
+        return false;
     }
     
     public static boolean verificarExtContraseña(String contra){
         return contra.length() >= 8 && contra.length()<20;
     }
     
-//    private List<Vehiculo> vehiculos;
+    
 
 //    public Usuario(String nombres, String apellidos, String correo, String clave, ArrayList<Vehiculo> vehiculos) {
 //        this.nombres = nombres;
@@ -61,22 +60,21 @@ public class Usuario implements Serializable{
 //        return this.correo + "|" + this.clave;
 //    }
 //    
-//    public static void saveListUsuariosSer(List<Usuario> usuarios){
-//        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("usuarios.ser"))){
-//            out.writeObject(usuarios);
-//        } catch(IOException e){}
-//    }
+    public static void saveListUsuariosSer(List<Usuario> usuarios){
+        try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("usuarios.ser"))){
+            out.writeObject(usuarios);
+        } catch(IOException e){}
+    }
 //    
-//    public static List<Usuario> readFileSer(){
-//        List<Usuario> usuarios = new List<>();
-//        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("usuarios.ser"))){
-//            usuarios = (List<Usuario>)in.readObject();
-//        } catch(ClassNotFoundException c){
-//        } catch(IOException e){}
-//        return usuarios;
-//    }
+    public static List<Usuario> readFileSer(){
+        List<Usuario> usuarios = new ArrayList<>();
+        try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("usuarios.ser"))){
+            usuarios = (List<Usuario>)in.readObject();
+        } catch(ClassNotFoundException | IOException c){}
+        return usuarios;
+    }
 //    
-//    public static boolean checkCorreo(List<Usuario> usuarios, String correo){
+//    public static boolean checkCorreo(ArrayList<Usuario> usuarios, String correo){
 //        for(Usuario u : usuarios){
 //            if(u.correo.equals(correo)){
 //                return true;
