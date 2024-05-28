@@ -11,7 +11,7 @@ package ec.edu.espol.model;
 public class ArrayList<E> implements List<E>{
     
     private E[]elements=null;
-    private int capacity=10;
+    private int capacity=2;
     private int effectiveSize;
     
     public ArrayList(){
@@ -80,7 +80,7 @@ public class ArrayList<E> implements List<E>{
     @Override
     public void add(int index, E element){
         if(element==null) throw new NullPointerException();
-        else if(index<0 || index>effectiveSize) throw new IndexOutOfBoundsException();
+        else if(index<0 || index>=effectiveSize) throw new IndexOutOfBoundsException();
         else if(isFull()) addCapacity();
         for(int i=effectiveSize;i>index;i--){
             elements[i]=elements[i-1];
