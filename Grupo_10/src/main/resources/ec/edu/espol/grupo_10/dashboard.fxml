@@ -1,8 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.StackPane?>
@@ -16,21 +22,21 @@
          <children>
             <BorderPane prefHeight="500.0" prefWidth="700.0">
                <top>
-                  <AnchorPane prefHeight="45.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <AnchorPane prefHeight="51.0" prefWidth="711.0" styleClass="semi-top-form" stylesheets="@dashboardDesign.css" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="262.0" layoutY="-77.0" prefHeight="35.0" prefWidth="700.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="0.8" layoutY="-77.0" prefHeight="46.0" prefWidth="700.0" styleClass="top-form" stylesheets="@dashboardDesign.css" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Label layoutX="14.0" layoutY="14.0" text="🤖" textFill="#1c2833">
+                              <Label layoutX="14.0" layoutY="9.0" text="🤖" textFill="#1c2833">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="41.0" layoutY="21.0" text="OPTIMUS PRIME MOTORS" textFill="#1c2833">
+                              <Label layoutX="41.0" layoutY="17.0" text="OPTIMUS PRIME MOTORS" textFill="#1c2833">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="12.0" />
                                  </font>
                               </Label>
-                              <Text fill="#1c2833" layoutX="663.0" layoutY="36.0" onMouseClicked="#fnSalir" strokeType="OUTSIDE" strokeWidth="0.0" text="✘">
+                              <Text fill="#1c2833" layoutX="663.0" layoutY="30.0" onMouseClicked="#fnSalir" strokeType="OUTSIDE" strokeWidth="0.0" text="✘">
                                  <font>
                                     <Font size="20.0" />
                                  </font>
@@ -46,36 +52,40 @@
                <left>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="-14.0" layoutY="52.0" prefHeight="454.4" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane layoutX="-14.0" layoutY="52.0" prefHeight="454.4" prefWidth="200.0" styleClass="nav-form" stylesheets="@dashboardDesign.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
-                              <Text fill="#1c2833" layoutX="3.0" layoutY="75.0" strokeWidth="0.0" text="▼・ᴥ・▼" textAlignment="CENTER" wrappingWidth="193.83511352539062">
+                              <Text fill="#eaedef" layoutX="3.0" layoutY="75.0" strokeWidth="0.0" text="▼・ᴥ・▼" textAlignment="CENTER" wrappingWidth="193.83511352539062">
                                  <font>
                                     <Font size="36.0" />
                                  </font>
                               </Text>
-                              <Label layoutX="44.0" layoutY="95.0" text="Bienvenido/a," textFill="#1c2833">
+                              <Label layoutX="44.0" layoutY="95.0" text="Bienvenido/a," textFill="#eaedef">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="17.0" />
                                  </font>
                               </Label>
-                              <Label alignment="CENTER" layoutX="4.0" layoutY="117.0" prefHeight="20.0" prefWidth="192.0" text="NombreUsuario" textFill="#1c2833">
+                              <Label fx:id="lblNombreUsuario" alignment="CENTER" layoutX="4.0" layoutY="117.0" prefHeight="20.0" prefWidth="192.0" text="NombreUsuario" textFill="#ffee6f">
                                  <font>
-                                    <Font name="Berlin Sans FB Demi Bold" size="20.0" />
+                                    <Font name="Berlin Sans FB" size="20.0" />
                                  </font>
                               </Label>
-                              <Line endX="65.10000610351562" endY="-1.52587890625E-5" layoutX="117.0" layoutY="151.0" startX="-100.0" stroke="#1c2833" />
-                              <Button layoutX="10.0" layoutY="167.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" text="🏠 Principal" />
-                              <Button layoutX="10.0" layoutY="197.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" text="🚗 Vehículos" />
-                              <Button layoutX="10.0" layoutY="227.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" text="✚ Agregar vehículo" />
-                              <Text fill="#1c2833" layoutX="17.0" layoutY="436.0" onMouseClicked="#fnCerrarSesion" strokeType="OUTSIDE" strokeWidth="0.0" text="➲">
+                              <Line endX="65.10000610351562" endY="-1.52587890625E-5" layoutX="117.0" layoutY="151.0" startX="-100.0" stroke="#eaedef" />
+                              <Button fx:id="btnSeccionPrincipal" layoutX="10.0" layoutY="167.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="🏠 Principal" />
+                              <Button fx:id="btnSeccionVer" layoutX="10.0" layoutY="197.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="🚗 Vehículos" />
+                              <Button fx:id="btnSeccionAgregar" layoutX="10.0" layoutY="227.0" mnemonicParsing="false" prefHeight="30.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="✚ Agregar vehículo" />
+                              <Text fill="#eaedef" layoutX="17.0" layoutY="436.0" onMouseClicked="#fnCerrarSesion" strokeType="OUTSIDE" strokeWidth="0.0" text="➲">
                                  <font>
                                     <Font size="30.0" />
                                  </font>
                                  <cursor>
                                     <Cursor fx:constant="HAND" />
                                  </cursor>
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="logout" />
+                                 </styleClass>
                               </Text>
-                              <Label layoutX="47.0" layoutY="418.0" text="Cerrar Sesión" textFill="#1c2833">
+                              <Label layoutX="47.0" layoutY="418.0" text="Cerrar Sesión" textFill="#eaedef">
                                  <font>
                                     <Font name="Arial Rounded MT Bold" size="12.0" />
                                  </font>
@@ -88,7 +98,240 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane layoutX="41.0" layoutY="79.0" prefHeight="454.4" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+                        <AnchorPane fx:id="dashboardPrincipal" layoutX="8.0" layoutY="79.0" prefHeight="449.0" prefWidth="494.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="11.0" layoutY="12.0" prefHeight="426.0" prefWidth="478.0" stylesheets="@dashboardDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane prefHeight="118.0" prefWidth="478.0" stylesheets="@dashboardDesign.css">
+                                       <styleClass>
+                                          <String fx:value="white-bg" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <children>
+                                          <AnchorPane layoutX="20.0" layoutY="7.0" prefHeight="100.0" prefWidth="140.0" stylesheets="@dashboardDesign.css">
+                                             <styleClass>
+                                                <String fx:value="nav-form" />
+                                                <String fx:value="card" />
+                                             </styleClass>
+                                             <children>
+                                                <Text fill="WHITE" layoutX="19.0" layoutY="65.0" strokeType="OUTSIDE" strokeWidth="0.0" text="🚗">
+                                                   <font>
+                                                      <Font size="54.0" />
+                                                   </font>
+                                                </Text>
+                                                <Label layoutX="29.0" layoutY="79.0" text="Total de autos" textFill="#eaedef">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblCantAutos" alignment="CENTER_RIGHT" layoutX="46.0" layoutY="7.0" prefHeight="18.0" prefWidth="79.0" text="0" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="25.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane layoutX="169.0" layoutY="8.0" prefHeight="100.0" prefWidth="140.0" stylesheets="@dashboardDesign.css">
+                                             <styleClass>
+                                                <String fx:value="nav-form" />
+                                                <String fx:value="card" />
+                                             </styleClass>
+                                             <children>
+                                                <Text fill="WHITE" layoutX="14.0" layoutY="79.0" strokeType="OUTSIDE" strokeWidth="0.0" text="🛵">
+                                                   <font>
+                                                      <Font size="50.0" />
+                                                   </font>
+                                                </Text>
+                                                <Label layoutX="27.0" layoutY="78.0" text="Total de motos" textFill="#eaedef">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblCantMotos" alignment="CENTER_RIGHT" layoutX="46.0" layoutY="6.0" prefHeight="18.0" prefWidth="79.0" text="0" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="25.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                          <AnchorPane layoutX="318.0" layoutY="8.0" prefHeight="100.0" prefWidth="140.0" stylesheets="@dashboardDesign.css">
+                                             <styleClass>
+                                                <String fx:value="nav-form" />
+                                                <String fx:value="card" />
+                                             </styleClass>
+                                             <children>
+                                                <Text fill="WHITE" layoutX="14.0" layoutY="66.0" strokeType="OUTSIDE" strokeWidth="0.0" text="🚘">
+                                                   <font>
+                                                      <Font size="43.0" />
+                                                   </font>
+                                                </Text>
+                                                <Label layoutX="11.0" layoutY="80.0" prefHeight="10.0" prefWidth="118.0" text="Total de camionetas" textFill="#eaedef">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="12.0" />
+                                                   </font>
+                                                </Label>
+                                                <Label fx:id="lblCantCamionetas" alignment="CENTER_RIGHT" layoutX="46.0" layoutY="7.0" prefHeight="18.0" prefWidth="79.0" text="0" textFill="WHITE">
+                                                   <font>
+                                                      <Font name="Arial Rounded MT Bold" size="25.0" />
+                                                   </font>
+                                                </Label>
+                                             </children>
+                                          </AnchorPane>
+                                       </children>
+                                    </AnchorPane>
+                                 </children>
+                              </AnchorPane>
+                           </children></AnchorPane>
+                        <AnchorPane fx:id="dashboardVV" layoutX="97.0" layoutY="124.0" prefHeight="448.8" prefWidth="500.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="11.0" layoutY="12.0" prefHeight="426.0" prefWidth="478.0" stylesheets="@dashboardDesign.css">
+                                 <styleClass>
+                                    <String fx:value="shadow" />
+                                    <String fx:value="white-bg" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane prefHeight="265.0" prefWidth="478.0" stylesheets="@dashboardDesign.css">
+                                       <styleClass>
+                                          <String fx:value="shadow" />
+                                          <String fx:value="white-bg" />
+                                       </styleClass>
+                                       <children>
+                                          <TableView fx:id="tvVehiculo" layoutX="7.0" layoutY="37.0" prefHeight="218.0" prefWidth="464.0">
+                                            <columns>
+                                              <TableColumn fx:id="tvColTipo" prefWidth="75.0" text="Tipo" />
+                                              <TableColumn fx:id="tvColPlaca" prefWidth="75.0" text="Placa" />
+                                                <TableColumn fx:id="tvColMarca" prefWidth="79.20001220703125" text="Marca" />
+                                                <TableColumn fx:id="tvColModelo" prefWidth="71.19998168945312" text="Modelo" />
+                                                <TableColumn fx:id="tvColPrecio" prefWidth="79.20001220703125" text="Precio" />
+                                                <TableColumn fx:id="tvColKm" prefWidth="81.60003662109375" text="Km" />
+                                            </columns>
+                                          </TableView>
+                                          <Text fill="#1c2833" layoutX="89.0" layoutY="23.0" strokeType="OUTSIDE" strokeWidth="0.0" text="ENCUENTRA TU VEHÍCULO IDEAL">
+                                             <font>
+                                                <Font name="Arial Black" size="16.0" />
+                                             </font>
+                                          </Text>
+                                       </children>
+                                    </AnchorPane>
+                                    <Label alignment="CENTER_RIGHT" layoutX="-8.0" layoutY="291.0" prefHeight="18.0" prefWidth="90.0" text="Tipo:">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="-8.0" layoutY="322.0" prefHeight="18.0" prefWidth="90.0" text="Marca:">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="-8.0" layoutY="353.0" prefHeight="18.0" prefWidth="90.0" text="Modelo:">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <Label alignment="CENTER_RIGHT" layoutX="-8.0" layoutY="384.0" prefHeight="18.0" prefWidth="90.0" text="Precio:">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="14.0" />
+                                       </font>
+                                    </Label>
+                                    <ComboBox fx:id="cbxFTipo" layoutX="90.0" layoutY="287.0" prefHeight="26.0" prefWidth="130.0" promptText="Elige un tipo" />
+                                    <ComboBox fx:id="cbxFMarca" layoutX="90.0" layoutY="318.0" prefHeight="26.0" prefWidth="130.0" promptText="Elige una marca" />
+                                    <ComboBox fx:id="cbxFModelo" layoutX="90.0" layoutY="349.0" prefHeight="26.0" prefWidth="130.0" promptText="Elige un modelo" />
+                                    <ComboBox fx:id="cbxFPrecio" layoutX="90.0" layoutY="380.0" prefHeight="26.0" prefWidth="130.0" promptText="Rango de precio" />
+                                    <AnchorPane layoutX="239.0" layoutY="293.0" prefHeight="110.0" prefWidth="100.0" stylesheets="@dashboardDesign.css">
+                                       <styleClass>
+                                          <String fx:value="white-bg" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <children>
+                                          <ImageView fx:id="imFVehiculo" fitHeight="110.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Button layoutX="364.0" layoutY="306.0" mnemonicParsing="false" onMouseClicked="#fnFiltrar" prefHeight="38.0" prefWidth="88.0" style="-fx-background-color: #1c2833;" text="Filtrar" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                    <Button layoutX="364.0" layoutY="351.0" mnemonicParsing="false" onMouseClicked="#fnLimpiarFiltro" prefHeight="38.0" prefWidth="88.0" style="-fx-background-color: #1c2833;" text="Limpiar" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                    </Button>
+                                 </children>
+                              </AnchorPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="dashboardAV" layoutX="50.0" layoutY="40.0" prefHeight="448.8" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                           <children>
+                              <AnchorPane layoutX="250.0" layoutY="137.0" prefHeight="286.0" prefWidth="234.0" stylesheets="@dashboardDesign.css">
+                                 <styleClass>
+                                    <String fx:value="white-bg" />
+                                    <String fx:value="shadow" />
+                                 </styleClass>
+                                 <children>
+                                    <AnchorPane layoutX="14.0" layoutY="20.0" prefHeight="205.0" prefWidth="205.0" stylesheets="@dashboardDesign.css">
+                                       <styleClass>
+                                          <String fx:value="nav-form" />
+                                          <String fx:value="card" />
+                                          <String fx:value="nav-form" />
+                                          <String fx:value="shadow" />
+                                       </styleClass>
+                                       <children>
+                                          <ImageView fx:id="imVehiculo" fitHeight="200.0" fitWidth="200.0" layoutX="3.0" layoutY="3.0" pickOnBounds="true" preserveRatio="true" />
+                                       </children>
+                                    </AnchorPane>
+                                    <Button alignment="CENTER" layoutX="41.0" layoutY="236.0" mnemonicParsing="false" onMouseClicked="#fnImportarImagen" prefHeight="36.0" prefWidth="152.0" style="-fx-background-color: #1c2833;" text="⨭ Importar Imagen" textFill="WHITE" />
+                                 </children>
+                              </AnchorPane>
+                              <Label alignment="CENTER_RIGHT" layoutY="18.0" prefHeight="18.0" prefWidth="81.0" text="Tipo:">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <ComboBox fx:id="cbxTipo" layoutX="85.0" layoutY="14.0" prefWidth="150.0" promptText="Elige un tipo" />
+                              <Label alignment="CENTER_RIGHT" layoutY="47.0" prefHeight="18.0" prefWidth="81.0" text="Placa:">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtPlaca" layoutX="85.0" layoutY="43.0" promptText="Digite la placa" />
+                              <Label alignment="CENTER_RIGHT" layoutY="76.0" prefHeight="18.0" prefWidth="81.0" text="Marca:">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtMarca" layoutX="85.0" layoutY="72.0" prefHeight="26.0" prefWidth="388.0" promptText="Ingrese la marca" />
+                              <Label alignment="CENTER_RIGHT" layoutY="105.0" prefHeight="18.0" prefWidth="81.0" text="Modelo:">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtModelo" layoutX="85.0" layoutY="101.0" prefHeight="26.0" prefWidth="388.0" promptText="Ingrese el modelo" />
+                              <Label alignment="CENTER_RIGHT" layoutX="238.0" layoutY="16.0" prefHeight="18.0" prefWidth="81.0" text="Km:">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtKm" layoutX="323.0" layoutY="12.0" promptText="Ingrese el kilometraje" />
+                              <Label alignment="CENTER_RIGHT" layoutX="238.0" layoutY="46.0" prefHeight="18.0" prefWidth="81.0" text="Precio:">
+                                 <font>
+                                    <Font name="Arial Rounded MT Bold" size="14.0" />
+                                 </font>
+                              </Label>
+                              <TextField fx:id="txtPrecio" layoutX="323.0" layoutY="42.0" promptText="Ingrese el precio" />
+                              <Button contentDisplay="CENTER" layoutX="32.0" layoutY="159.0" mnemonicParsing="false" onMouseClicked="#fnAgregarVehiculo" prefHeight="26.0" prefWidth="178.0" style="-fx-background-color: #1c2833;" text="✛ Añadir" textFill="WHITE" />
+                              <Button contentDisplay="CENTER" layoutX="32.0" layoutY="197.0" mnemonicParsing="false" onMouseClicked="#fnEliminarVehiculo" prefHeight="26.0" prefWidth="178.0" style="-fx-background-color: #1c2833;" text="✗ Eliminar" textFill="WHITE" />
+                              <Button contentDisplay="CENTER" layoutX="32.0" layoutY="234.0" mnemonicParsing="false" onMouseClicked="#fnActualizarInfoVehiculo" prefHeight="26.0" prefWidth="178.0" style="-fx-background-color: #1c2833;" text="🗘 Actualizar" textFill="WHITE" />
+                              <Button alignment="CENTER" layoutX="32.0" layoutY="280.0" mnemonicParsing="false" onMouseClicked="#fnLimpiar" prefHeight="48.0" prefWidth="80.0" style="-fx-background-color: #1c2845;" text="⚡ Limpiar" textFill="WHITE">
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </AnchorPane>
                      </children>
                   </AnchorPane>
                </center>

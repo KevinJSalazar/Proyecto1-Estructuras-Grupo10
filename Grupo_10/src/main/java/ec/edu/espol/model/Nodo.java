@@ -6,6 +6,7 @@ package ec.edu.espol.model;
 
 /**
  *
+<<<<<<< HEAD
  * @author USUARIO
  */
 public class Nodo<E>{

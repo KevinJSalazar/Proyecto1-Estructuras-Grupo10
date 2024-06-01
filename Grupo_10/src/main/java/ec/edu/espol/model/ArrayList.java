@@ -9,7 +9,8 @@ package ec.edu.espol.model;
  * @author USUARIO
  */
 public class ArrayList<E> implements List<E>{
-    private E [] elements;
+  
+    private E[]elements=null;
     private int effectiveSize;
     private int capacity=10;
     
@@ -119,6 +120,7 @@ public class ArrayList<E> implements List<E>{
     private boolean isFull(){
         return effectiveSize==capacity;
     }
+
     
     private void addCapacity(){
         E[] newArray =(E[]) new Object[capacity*2];
@@ -128,4 +130,14 @@ public class ArrayList<E> implements List<E>{
         elements=newArray;
         capacity=capacity*2;
     }
-}
+
+    @Override
+    public boolean contains(E element) {
+        if(element!=null){
+            for(int i=0;i<effectiveSize;i++){
+                if(elements[i]==element) return true;
+            }
+        }
+        return false;
+    }
+ }

@@ -18,6 +18,7 @@ import javafx.stage.Stage;
  * @author omits
  */
 public class UtileriaFunciones {
+    
     public static void salirPantallaB(Event event){
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
@@ -34,7 +35,6 @@ public class UtileriaFunciones {
             Scene sc = new Scene(loader.load(), 700, 500);
             App.setScene(sc);
         } catch(IOException ex){}
-
     }
     
     public static boolean verificarCondiciones(Boolean b){

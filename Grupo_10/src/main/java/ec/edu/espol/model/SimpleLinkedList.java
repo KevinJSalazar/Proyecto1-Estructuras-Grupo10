@@ -195,5 +195,10 @@ public class SimpleLinkedList<E> implements List<E>{
     public void setLast(Nodo<E> last) {
         this.last = last;
     }
+
+    @Override
+    public boolean contains(E element) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
     
 }
