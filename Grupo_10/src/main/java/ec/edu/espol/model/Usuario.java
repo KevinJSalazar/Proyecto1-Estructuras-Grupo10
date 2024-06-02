@@ -10,17 +10,17 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-
 /**
  *
  * @author evin
  */
 public class Usuario implements Serializable{
-    private List<Vehiculo> vehiculos;
     private String nombre;
     private String apellido;
     private String correo;
     private String clave;
+    private ArrayList<Vehiculo> vehiculos;
+
     
     public Usuario(String nombre, String apellido, String correo, String clave) {
         this.nombre = nombre;
@@ -66,40 +66,37 @@ public class Usuario implements Serializable{
         } catch(IOException e){}
     }
 //    
-    public static List<Usuario> readFileSer(){
-        List<Usuario> usuarios = new ArrayList<>();
+    public static ArrayList<Usuario> readFileSer(){
+        ArrayList<Usuario> usuarios = new ArrayList<>();
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("usuarios.ser"))){
-            usuarios = (List<Usuario>)in.readObject();
+            usuarios = (ArrayList<Usuario>)in.readObject();
         } catch(ClassNotFoundException | IOException c){}
         
         return usuarios;
     }
 //    
-//    public static boolean checkCorreo(ArrayList<Usuario> usuarios, String correo){
-//        for(Usuario u : usuarios){
-//            if(u.correo.equals(correo)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    public static boolean validarCorreo(ArrayList<Usuario> usuarios, String correo){
+        for(Usuario u : usuarios){
+            if(u.correo.equals(correo))
+                return true;      
+        }return false;
+    }
 //    
-//    public static boolean checkCuenta(List<Usuario> usuarios, String correo, String clave){
-//        for(Usuario u : usuarios){
-//            if(u.correo.equals(correo) && u.clave.equals(clave)){
-//                return true;
-//            }
-//        }
-//        return false;
-//    }
+    public static boolean verificarCuenta(ArrayList<Usuario> usuarios, String correo, String clave){
+        for(Usuario u : usuarios){
+            if(u.correo.equals(correo) && u.clave.equals(clave))
+                return true;   
+        } return false;
+    }
 //    
-//    public static Usuario filtrarCorreo(List<Usuario> usuarios, String correo){
-//        for(Usuario u : usuarios){
-//            if(u.correo.equals(correo))
-//                return u;
-//        }
-//        return null;
-//    }
+    public static Usuario filtrarUsuario(ArrayList<Usuario> usuarios, String correo){
+        for(Usuario u : usuarios){
+            if(u.correo.equals(correo))
+                return u;
+        } return null;
+    }
+    
+    
 //    
 //    public List<String> getPlacas(){
 //        List<String> placas = new List<>();
@@ -147,6 +144,31 @@ public class Usuario implements Serializable{
 //    public void setVehiculos(List<Vehiculo> vehiculos) {
 //        this.vehiculos = vehiculos;
 //    }
+
+    public List<Vehiculo> getVehiculos() {
+        return vehiculos;
+    }
+
+    public String getNombre() {
+        return nombre;
+    }
+
+    public String getApellido() {
+        return apellido;
+    }
+
+    public String getCorreo() {
+        return correo;
+    }
+
+    public String getClave() {
+        return clave;
+    }
+
+    @Override
+    public String toString(){
+        return this.correo+"|"+this.clave;
+    }
 
 
 }

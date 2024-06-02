@@ -4,11 +4,17 @@
  */
 package ec.edu.espol.controllers;
 
+import ec.edu.espol.model.Usuario;
 import ec.edu.espol.util.UtileriaFunciones;
+import ec.edu.espol.util.UtileriaMensaje;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -18,6 +24,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -84,6 +91,12 @@ public class DashboardController implements Initializable {
     private TextField txtKm;
     @FXML
     private TextField txtPrecio;
+    
+    private Usuario usuarioActual;
+    
+    private double x = 0;
+    private double y = 0;
+    
 
     /**
      * Initializes the controller class.
@@ -91,16 +104,25 @@ public class DashboardController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
-    }    
+    }
 
+    public void setUsuario(Usuario u){
+        this.usuarioActual = u;
+        lblNombreUsuario.setText(usuarioActual.getNombre());
+    }
+
+
+    
     @FXML
     private void fnSalir(MouseEvent event) {
         UtileriaFunciones.salirPantallaT(event);
     }
 
     @FXML
-    private void fnCerrarSesion(MouseEvent event) {
-        UtileriaFunciones.cambiarEscena(event, "login");
+    public void fnCerrarSesion(MouseEvent event) {
+        if(UtileriaMensaje.generarAlertaConfirmacion("Cerrar sesión", "¿Está seguro de cerrar su sesión?")){
+            UtileriaFunciones.cambiarEscena(event, "login");
+        }
     }
 
     @FXML

@@ -4,21 +4,28 @@
  */
 package ec.edu.espol.util;
 
+import ec.edu.espol.controllers.DashboardController;
 import ec.edu.espol.grupo_10.App;
+import static ec.edu.espol.grupo_10.App.loadFXML;
+import ec.edu.espol.model.Usuario;
 import java.io.IOException;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *
  * @author omits
  */
 public class UtileriaFunciones {
-    
+    public static double xOffset = 0;
+    public static double yOffset = 0;
     public static void salirPantallaB(Event event){
         Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         stage.close();
@@ -33,6 +40,26 @@ public class UtileriaFunciones {
         try{
             FXMLLoader loader = App.loadFXML(fxml);
             Scene sc = new Scene(loader.load(), 700, 500);
+            App.setScene(sc);
+        } catch(IOException ex){}
+    }
+    
+    public static void cambiarEscena(String fxml){
+        
+        try{
+            FXMLLoader loader = App.loadFXML(fxml);
+            Scene sc = new Scene(loader.load(), 700, 500);   
+            App.setScene(sc);
+        } catch(IOException ex){}
+    }
+    
+    
+     public static void cambiarDashboardPrincipal(Usuario usuario){
+        try{
+            FXMLLoader loader = App.loadFXML("dashboard");
+            Scene sc = new Scene(loader.load(), 700, 500);
+            DashboardController controlador = loader.getController();
+            controlador.setUsuario(usuario);
             App.setScene(sc);
         } catch(IOException ex){}
     }

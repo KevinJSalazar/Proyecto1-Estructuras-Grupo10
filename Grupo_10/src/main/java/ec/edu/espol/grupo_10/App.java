@@ -2,6 +2,8 @@ package ec.edu.espol.grupo_10;
 
 //import ec.edu.espol.model.Usuario;
 //import ec.edu.espol.model.Vehiculo;
+import ec.edu.espol.model.Usuario;
+import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -43,7 +45,10 @@ public class App extends Application {
         stage.setScene(scene);
         stage.show();
     }
-    
+        
+    public static Stage getStage(){
+        return st;
+    }
     
     static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml).load());
@@ -58,6 +63,20 @@ public class App extends Application {
     }
 
     public static void main(String[] args) {
+        for (Usuario u : Usuario.readFileSer())
+            System.out.println(u);
+        
+        String filePath = "usuarios.ser";
+
+        // Crea un objeto File con la ruta especificada
+        File file = new File(filePath);
+
+        // Verifica si el archivo existe
+        if (file.exists()) {
+            System.out.println("El archivo usuarios.ser existe en la ubicación especificada.");
+        } else {
+            System.out.println("El archivo usuarios.ser no existe en la ubicación especificada.");
+        }
         launch();
     }
     

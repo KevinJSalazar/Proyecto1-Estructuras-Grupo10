@@ -4,6 +4,7 @@
  */
 package ec.edu.espol.controllers;
 
+import ec.edu.espol.model.ArrayList;
 import ec.edu.espol.model.Usuario;
 import ec.edu.espol.util.UtileriaFunciones;
 import ec.edu.espol.util.UtileriaMensaje;
@@ -53,7 +54,7 @@ public class RegisterController implements Initializable {
         String correo = (String)this.correo.getText();
         String contraseña = (String)this.contraseña.getText();
         String repetContraseña = (String)this.repetContraseña.getText();
-        
+        ArrayList<Usuario> usuarios = Usuario.readFileSer();
         if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contraseña.isEmpty()){
             UtileriaMensaje.generarAlertaInfo("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
         } else{
@@ -64,12 +65,18 @@ public class RegisterController implements Initializable {
             else if(UtileriaFunciones.verificarCondiciones(repetContraseña.equals(contraseña)))
                 UtileriaMensaje.generarAlertaError("Contraseñas inconsistentes", "Las contraseñas no coinciden.");
             else{
-                
-            }
-            
-                
-            
-            // Aquí implementar condición del checkCorreo()con la lista de usuario implementada por nosotros
+                if(Usuario.validarCorreo(usuarios, correo))
+                    UtileriaMensaje.generarAlertaInfo("Correo existente", "El correo indicado ya existe en nuestra base de datos.");
+                else{
+                    Usuario usuario =new Usuario(nombre,apellido, correo, contraseña);
+                    usuarios.addLast(usuario);
+                    Usuario.saveListUsuariosSer(usuarios);
+
+                    if(UtileriaMensaje.generarAlertaConfirmacion("Creación exitosa", "¡Usuario creado con éxito!")){
+                        UtileriaFunciones.cambiarEscena("login");
+                    }
+                }
+            }                            
         } 
     }
 

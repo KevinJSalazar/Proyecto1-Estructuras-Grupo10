@@ -4,11 +4,16 @@
  */
 package ec.edu.espol.model;
 
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  *
  * @author USUARIO
+ * @param <E>
  */
-public class ArrayList<E> implements List<E>{
+public class ArrayList<E> implements List<E>, Iterable<E>, Serializable{
     
     private E[]elements=null;
     private int capacity=10;
@@ -144,4 +149,24 @@ public class ArrayList<E> implements List<E>{
         }
         return false;
     }
+
+    @Override
+    public Iterator<E> iterator() {
+        return new Iterator<E>(){
+            private int currentIndex = 0;
+
+            @Override
+            public boolean hasNext() {
+                return currentIndex < effectiveSize;
+            }
+
+            @Override
+            public E next() {
+                if(!hasNext())
+                    throw new NoSuchElementException();
+                return elements[currentIndex++];
+            }       
+        };
+    }
+    
 }

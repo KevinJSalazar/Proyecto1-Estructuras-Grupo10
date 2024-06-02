@@ -16,7 +16,7 @@ import java.util.Comparator;
  *
  * @author User evin
  */
-public abstract class Vehiculo implements Serializable{
+public class Vehiculo implements Serializable{
     protected String placa;
     protected String marca;
     protected String modelo;
@@ -50,18 +50,18 @@ public abstract class Vehiculo implements Serializable{
 //        return placa;
 //    }
 //    
-    public static void saveListVehiculosSer(List<Vehiculo> vehiculos){
+    public static void saveListVehiculosSer(ArrayList<Vehiculo> vehiculos){
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("vehiculos.ser"))){
             out.writeObject(vehiculos);
         } catch(IOException e){}
     }
     
-    public static List<Vehiculo> readFileSer(){
-        List<Vehiculo> vehiculos = new ArrayList<Vehiculo>();
+    public static ArrayList<Vehiculo> readFileSer(){
+        ArrayList<Vehiculo> vehiculos = new ArrayList<>();
         try(ObjectInputStream in = new ObjectInputStream(new FileInputStream("vehiculos.ser"))){
-            vehiculos = (List<Vehiculo>)in.readObject();
-        } catch(ClassNotFoundException c){
-        } catch(IOException e){}
+            vehiculos = (ArrayList<Vehiculo>)in.readObject();
+        } catch(ClassNotFoundException | IOException c){
+        }
         return vehiculos;
     }
 //    
