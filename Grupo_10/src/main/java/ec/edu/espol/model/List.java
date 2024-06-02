@@ -15,9 +15,9 @@ public interface List<E> {
     
     public boolean addLast(E e);
     
-    public E removeFirst(E e);
+    public E removeFirst();
     
-    public E removeLast(E e);
+    public E removeLast();
     
     public int size();
     
