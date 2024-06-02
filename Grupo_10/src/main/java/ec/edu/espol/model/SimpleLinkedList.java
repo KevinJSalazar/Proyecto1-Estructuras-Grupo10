@@ -4,15 +4,19 @@
  */
 package ec.edu.espol.model;
 
+import java.io.Serializable;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
+
 /**
  *
  * @author USUARIO
  */
-public class SimpleLinkedList<E> implements List<E>{
+public class SimpleLinkedList<E> implements List<E>, Iterable<E>, Serializable{
     
     private Nodo<E> first;
     private Nodo<E> last;
-
+    
     public SimpleLinkedList() {
         this.first = null;
         this.last = null;
@@ -87,7 +91,7 @@ public class SimpleLinkedList<E> implements List<E>{
 
     @Override
     public int size() {
-         int cont = 0;
+        int cont = 0;
         if (!isEmpty()) {
             Nodo<E> t;
             for (t = this.getFirst(); t != null; t = t.getNext()) {
@@ -195,10 +199,38 @@ public class SimpleLinkedList<E> implements List<E>{
     public void setLast(Nodo<E> last) {
         this.last = last;
     }
+    
+    public Iterator<E> iterator() {
+        return new LinkedListIterator();
+    }
 
+    private class LinkedListIterator implements Iterator<E> {
+        private Nodo<E> actual = first;
+
+        @Override
+        public boolean hasNext() {
+            return actual != null;
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            E data = actual.getContent();
+            actual = actual.getNext();
+            return data;
+        }
+    }
+    
     @Override
     public boolean contains(E element) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if(element!=null){
+            for(int i=0;i<this.size();i++){
+                if(this.get(i)==element) return true;
+            }
+        }
+        return false;
     }
     
 }

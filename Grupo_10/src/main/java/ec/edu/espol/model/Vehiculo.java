@@ -23,33 +23,32 @@ public class Vehiculo implements Serializable{
     protected int precio;
     protected int año;
     protected double kilometraje;
-    protected Usuario usuario;
-    
-    public static class CompararVehiculos implements Comparator<Vehiculo> {
+//    protected Usuario usuario;
 
-        @Override
-        public int compare(Vehiculo veh1, Vehiculo veh2) {
-            int result = Integer.compare(veh1.precio, veh2.precio);
-            if (result == 0) {
-                result = Double.compare(veh1.kilometraje, veh2.kilometraje);
-            }
-            return result;
-        }
+    public Vehiculo(String placa, String marca, String modelo, int precio, double kilometraje /*, Usuario usuario*/) {
+        this.placa = placa;
+        this.marca = marca;
+        this.modelo = modelo;
+        this.precio = precio;
+        this.kilometraje = kilometraje;
+//        this.usuario = usuario;
     }
 
-//    public Vehiculo(String placa, String marca, String modelo, int precio, double kilometraje, Usuario usuario) {
-//        this.placa = placa;
-//        this.marca = marca;
-//        this.modelo = modelo;
-//        this.precio = precio;
-//        this.kilometraje = kilometraje;
-//        this.usuario = usuario;
-//    }
-//
-//    public String getPlaca() {
-//        return placa;
-//    }
-//    
+    public String getPlaca() {
+        return placa;
+    }
+    
+//    @Override
+//        public String toString() {
+//            return "Vehiculo{" +
+//                    "placa='" + placa + '\'' +
+//                    ", marca='" + marca + '\'' +
+//                    ", modelo='" + modelo + '\'' +
+//                    ", precio=" + precio +
+//                    ", kilometraje=" + kilometraje +
+//                    '}';
+//        }
+    
     public static void saveListVehiculosSer(ArrayList<Vehiculo> vehiculos){
         try(ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream("vehiculos.ser"))){
             out.writeObject(vehiculos);
@@ -82,22 +81,23 @@ public class Vehiculo implements Serializable{
 //        return null;
 //    }
 //    
-//    public static List<Vehiculo> filtrarVehiculos(List<Vehiculo> vehiculos, String marca, String modelo, int preMin, int preMax, double kilMin, double kilMax){
-//        if(kilMin < 0 || kilMax < 0 || preMin < 1 || preMax < 0){
-//            throw new NegativeNumberException();
-//        }
-//        else{
-//            List<Vehiculo> vehiculosFil = new List<>();
-//            String tipoVeh;
-//            for(Vehiculo v : vehiculos){
-//                if(kilMin <= v.kilometraje && v.kilometraje <= kilMax){
-//                    if(preMin <= v.precio && v.precio <= preMax)
-//                        vehiculosFil.add(v);
-//                }
-//            }
-//        }
-//        return vehiculosFil;
-//    }
+    public static List<Vehiculo> filtrarVehiculos(List<Vehiculo> vehiculos, String marca, String modelo, int preMin, int preMax, double kilMin, double kilMax){
+        if(kilMin < 0 || kilMax < 0 || preMin < 1 || preMax < 0){
+            throw new NegativeNumberException();
+        }
+        List<Vehiculo> vehiculosFil = new SimpleLinkedList<>();
+        for(int i = 0; i < vehiculos.size(); i++){
+            Vehiculo v = vehiculos.get(i);
+            if(v.marca.equals(marca) && v.modelo.equals(modelo)){
+                if(kilMin <= v.kilometraje && v.kilometraje <= kilMax){
+                    if(preMin <= v.precio && v.precio <= preMax)
+                        vehiculosFil.addLast(vehiculos.get(i));
+                }
+            }
+        }
+        return vehiculosFil;
+    }
+    
 //
 //    public void setPlaca(String placa) {
 //        this.placa = placa;

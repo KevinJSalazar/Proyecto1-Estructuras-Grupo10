@@ -111,7 +111,6 @@ public class ArrayList<E> implements List<E>, Iterable<E>, Serializable{
             throw new IndexOutOfBoundsException();
         }
         return elements[index];
-        //aqui debería tirar un IndexOutOfBoundsException
     }
 
     @Override
