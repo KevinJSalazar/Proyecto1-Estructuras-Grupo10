@@ -35,8 +35,11 @@ public class Usuario implements Serializable{
         firmas.addLast("hotmail.com");firmas.addLast("outlook.com");firmas.addLast("outlook.es");firmas.addLast("gmail.com");
         if(correo.contains("@")){
             String[] parteCorreo = correo.split("@");
-            if(parteCorreo.length >=2 )
-                return firmas.contains(parteCorreo[1]);
+            if(parteCorreo.length >= 2 )
+                for(int i = 0; i < firmas.size(); i++){
+                    if(parteCorreo[1].equals(firmas.get(i)))
+                        return true;
+                }
         }
         return false;
     }

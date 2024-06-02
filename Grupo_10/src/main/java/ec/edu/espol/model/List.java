@@ -9,7 +9,7 @@ package ec.edu.espol.model;
  * @author USUARIO
  * @param <E>
  */
-public interface List<E> {
+public interface List<E>{
     
     public boolean addFirst(E e);
     
