@@ -56,25 +56,25 @@ public class RegisterController implements Initializable {
         String repetContraseña = (String)this.repetContraseña.getText();
         ArrayList<Usuario> usuarios = Usuario.readFileSer();
         if(nombre.isEmpty() || apellido.isEmpty() || correo.isEmpty() || contraseña.isEmpty()){
-            UtileriaMensaje.generarAlertaInfo("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
+            UtileriaMensaje.generarAlertaError("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
         } else{
             if(UtileriaFunciones.verificarCondiciones(Usuario.verificarFirmaCorreo(correo)))
-                UtileriaMensaje.generarAlertaInfo("Correo inválido", "Debe ingresar una dirección de correo válida. No institucional.");
+                UtileriaMensaje.generarAlertaError("Correo inválido", "Debe ingresar una dirección de correo válida. No institucional.");
             else if(UtileriaFunciones.verificarCondiciones(Usuario.verificarExtContraseña(contraseña)))
-                UtileriaMensaje.generarAlertaInfo("Contraseña inválida", "Debe ingresar una contraseña entre 8 y 20 caracteres.");
+                UtileriaMensaje.generarAlertaError("Contraseña inválida", "Debe ingresar una contraseña entre 8 y 20 caracteres.");
             else if(UtileriaFunciones.verificarCondiciones(repetContraseña.equals(contraseña)))
                 UtileriaMensaje.generarAlertaError("Contraseñas inconsistentes", "Las contraseñas no coinciden.");
             else{
                 if(Usuario.validarCorreo(usuarios, correo))
                     UtileriaMensaje.generarAlertaInfo("Correo existente", "El correo indicado ya existe en nuestra base de datos.");
                 else{
-                    Usuario usuario =new Usuario(nombre,apellido, correo, contraseña);
-                    usuarios.addLast(usuario);
-                    Usuario.saveListUsuariosSer(usuarios);
-
-                    if(UtileriaMensaje.generarAlertaConfirmacion("Creación exitosa", "¡Usuario creado con éxito!")){
+                    Usuario usuario =new Usuario(nombre,apellido, correo, contraseña);                    
+                    if(UtileriaMensaje.generarAlertaConfirmacion("Confirmar registro", "¿Está seguro de registrar esta cuenta?")){
+                        UtileriaMensaje.generarAlertaInfo("Registro exitoso", "¡Usuario creado con éxito!");
+                        usuarios.addLast(usuario);
+                        Usuario.saveListUsuariosSer(usuarios);
                         UtileriaFunciones.cambiarEscena("login");
-                    }
+                    } else{}
                 }
             }                            
         } 

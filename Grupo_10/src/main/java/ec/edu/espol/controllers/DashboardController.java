@@ -10,6 +10,7 @@ import ec.edu.espol.util.UtileriaMensaje;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -20,6 +21,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -74,11 +76,7 @@ public class DashboardController implements Initializable {
     @FXML
     private ComboBox<?> cbxFPrecio;
     @FXML
-    private ImageView imFVehiculo;
-    @FXML
     private AnchorPane dashboardAV;
-    @FXML
-    private ImageView imVehiculo;
     @FXML
     private ComboBox<?> cbxTipo;
     @FXML
@@ -93,9 +91,21 @@ public class DashboardController implements Initializable {
     private TextField txtPrecio;
     
     private Usuario usuarioActual;
-    
-    private double x = 0;
-    private double y = 0;
+        
+    @FXML
+    private ImageView imMostrarVehiculo;
+    @FXML
+    private Button btnSiguiente;
+    @FXML
+    private Button btnAtrás;
+    @FXML
+    private TextArea txtAreaInfo;
+    @FXML
+    private ImageView imMostrarMiVehiculo;
+    @FXML
+    private ImageView imCargarVehiculo;
+    @FXML
+    private TextArea txtAreaInfoMiVeh;
     
 
     /**
@@ -111,7 +121,26 @@ public class DashboardController implements Initializable {
         lblNombreUsuario.setText(usuarioActual.getNombre());
     }
 
-
+    @FXML
+    public void cambiarPestañas(ActionEvent event){
+        if(event.getSource() == btnSeccionPrincipal){
+            dashboardPrincipal.setVisible(true);
+            dashboardVV.setVisible(false);
+            dashboardAV.setVisible(false);
+        } else if(event.getSource() == btnSeccionVer){
+            dashboardPrincipal.setVisible(false);
+            dashboardVV.setVisible(true);
+            dashboardAV.setVisible(false);
+        } else if(event.getSource() == btnSeccionAgregar){
+            dashboardPrincipal.setVisible(false);
+            dashboardVV.setVisible(false);
+            dashboardAV.setVisible(true);
+        } else{
+            dashboardPrincipal.setVisible(true);
+            dashboardVV.setVisible(false);
+            dashboardAV.setVisible(false);
+        }
+    }
     
     @FXML
     private void fnSalir(MouseEvent event) {

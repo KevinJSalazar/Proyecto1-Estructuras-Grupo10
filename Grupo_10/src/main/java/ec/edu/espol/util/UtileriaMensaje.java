@@ -34,7 +34,11 @@ public class UtileriaMensaje {
         Optional<ButtonType> decisionBtn = alerta.showAndWait();
         if(decisionBtn.isPresent()){
             if(decisionBtn.get() == ButtonType.OK)
-                return true;            
+                return true;  
+            else if (decisionBtn.get() == ButtonType.CANCEL)
+                return false;
+            else if (decisionBtn.get() == ButtonType.CLOSE)
+                return false;
         }       
         return false;   
     }
