@@ -102,6 +102,7 @@ public class DashboardController implements Initializable {
     private Usuario usuarioActual;
     FileChooser fc = new FileChooser();
     private File imgFile;
+    private File imgCargarFile;
         
     @FXML
     private ImageView imMostrarVehiculo;
@@ -225,31 +226,40 @@ public class DashboardController implements Initializable {
                 new FileChooser.ExtensionFilter("Archivos de Imagen", "*.png", "*.jpg", "*.gif"),
                 new FileChooser.ExtensionFilter("Todos los archivos", "*.*"));
         
-        imgFile = fc.showOpenDialog(null);
+        imgCargarFile = fc.showOpenDialog(null);
         
-        if(imgFile != null)
-            imCargarVehiculo.setImage(new Image(imgFile.toURI().toString()));
+        if(imgCargarFile != null)
+            imCargarVehiculo.setImage(new Image(imgCargarFile.toURI().toString()));
     }
 
     @FXML
-    private void fnAgregarVehiculo(MouseEvent event) {
+    private void fnAgregarVehiculo(MouseEvent event) throws IOException {
         String placa = (String)this.txtPlaca.getText();
         String marca = (String)this.txtMarca.getText();
         String modelo = (String)this.txtModelo.getText();
         String tipo = (String)this.cbxTipo.getItems().toString();
         String stKilometraje = (String)this.txtKm.getText();
         String stPrecio = (String)this.txtPrecio.getText();
-        
+        ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
         if(placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || tipo.isEmpty() || stKilometraje.isEmpty() || stPrecio.isEmpty()){
             UtileriaMensaje.generarAlertaError("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
         }
         else{
-            ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
-            double kilometraje = Double.parseDouble(stKilometraje);
-            int precion = Integer.parseInt(stPrecio);
-            Vehiculo newVehiculo = new Vehiculo(placa, marca, modelo, tipo, precion, kilometraje, usuarioActual);
-            vehiculosReg.addLast(newVehiculo);
-            Vehiculo.saveListVehiculosSer(vehiculosReg);
+            try{
+                double kilometraje; int precio;
+                if(UtileriaFunciones.verificacionesNumericas(stKilometraje) && UtileriaFunciones.verificacionesNumericas(stPrecio)){
+                    kilometraje = Double.parseDouble(stKilometraje);
+                    precio = Integer.parseInt(stPrecio);
+                    Vehiculo newVehiculo = new Vehiculo(placa, marca, modelo, tipo, precio, kilometraje, usuarioActual);
+                    UtileriaFunciones.guardarImagen(imgCargarFile, placa);
+                    vehiculosReg.addLast(newVehiculo);
+                    Vehiculo.saveListVehiculosSer(vehiculosReg);
+                } else{
+                    UtileriaMensaje.generarAlertaError("Valores no permitidos", "Ingrese valores válidos.");
+                }  
+            } catch(IOException ioe){
+                    UtileriaMensaje.generarAlertaError("Falta imagen", "Suba una imagen de su vehículo.");       
+            }
         }
     }
 

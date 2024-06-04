@@ -73,6 +73,10 @@ public class UtileriaFunciones {
         return b == false;
     }
     
+    public static boolean verificacionesNumericas(String str){
+        return str.matches("\\d+(\\.\\d+)?");
+    }
+    
     public static void guardarImagen(File imagen, String n) throws IOException{
     String nombreImagen = n+".png";
     if(imagen != null){
