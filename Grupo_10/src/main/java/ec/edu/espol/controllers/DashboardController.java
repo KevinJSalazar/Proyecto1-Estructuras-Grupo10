@@ -17,6 +17,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -34,6 +35,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
@@ -99,11 +101,15 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField txtPrecio;
     
+    // ATRIBUTOS NO FXML
     private Usuario usuarioActual;
     FileChooser fc = new FileChooser();
     private File imgFile;
     private File imgCargarFile;
-        
+    private ArrayList<Vehiculo> vehiculos;
+    private int indiceActual = 0;
+    // ATRIBUTOS NO FXML
+    
     @FXML
     private ImageView imMostrarVehiculo;
     @FXML
@@ -111,13 +117,13 @@ public class DashboardController implements Initializable {
     @FXML
     private Button btnAtrás;
     @FXML
-    private TextArea txtAreaInfo;
+    private Text txtAreaInfo;
     @FXML
     private ImageView imMostrarMiVehiculo;
     @FXML
     private ImageView imCargarVehiculo;
     @FXML
-    private TextArea txtAreaInfoMiVeh;
+    private Text txtAreaInfoMiVeh;
     
 
     /**
@@ -125,6 +131,10 @@ public class DashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        vehiculos = Vehiculo.readFileSer();
+        navegarEnLista(vehiculos);
+        
+
         cbxTipo.getItems().addAll("Carro", "fdf", "Opción 3");
         cbxTipo.getSelectionModel().selectFirst();
     }
@@ -133,7 +143,39 @@ public class DashboardController implements Initializable {
         this.usuarioActual = u;
         lblNombreUsuario.setText(usuarioActual.getNombre());
     }
+    
+    public void navegarEnLista(ArrayList<Vehiculo> vehiculos){
+        indiceActual = 0;
+        actualizarVehiculo(vehiculos.get(indiceActual));
 
+        btnSiguiente.setDisable(vehiculos.isEmpty());
+        btnAtrás.setDisable(true);
+
+        btnSiguiente.setOnAction(event -> {
+            indiceActual++;
+            if (indiceActual >= vehiculos.size()) {
+                indiceActual = 0;
+            }
+            actualizarVehiculo(vehiculos.get(indiceActual));
+        });
+
+        btnAtrás.setOnAction(event -> {
+            indiceActual--;
+            if (indiceActual < 0) {
+                indiceActual = vehiculos.size() - 1; 
+            }
+            actualizarVehiculo(vehiculos.get(indiceActual));
+        });       
+    }
+
+    private void actualizarVehiculo(Vehiculo vehiculo) {
+        UtileriaFunciones.mostrarImagen(vehiculo.getPlaca(), imgFile, imMostrarVehiculo);
+        String mensaje = UtileriaFunciones.crearMensajeAuto(vehiculo.getTipo(), vehiculo.getPlaca(), vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getPrecio(), vehiculo.getKilometraje());
+        txtAreaInfo.setText(mensaje);
+        btnAtrás.setDisable(vehiculos.size() <= 1); 
+    }
+
+    
     @FXML
     public void cambiarPestañas(ActionEvent event){
         if(event.getSource() == btnSeccionPrincipal){
