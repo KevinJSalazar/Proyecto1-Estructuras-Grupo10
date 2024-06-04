@@ -3,6 +3,7 @@ package ec.edu.espol.grupo_10;
 //import ec.edu.espol.model.Usuario;
 //import ec.edu.espol.model.Vehiculo;
 import ec.edu.espol.model.Usuario;
+import ec.edu.espol.model.Vehiculo;
 import java.io.File;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -65,6 +66,9 @@ public class App extends Application {
     public static void main(String[] args) {
         for (Usuario u : Usuario.readFileSer())
             System.out.println(u);
+        
+        for (Vehiculo v : Vehiculo.readFileSer())
+            System.out.println(v);
         
         String filePath = "usuarios.ser";
 

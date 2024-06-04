@@ -201,27 +201,25 @@ public class SimpleLinkedList<E> implements List<E>, Iterable<E>, Serializable{
     }
     
     public Iterator<E> iterator() {
-        return new LinkedListIterator();
-    }
-
-    private class LinkedListIterator implements Iterator<E> {
-        private Nodo<E> actual = first;
-
-        @Override
-        public boolean hasNext() {
-            return actual != null;
-        }
-
-        @Override
-        public E next() {
-            if (!hasNext()) {
-                throw new NoSuchElementException();
+        Iterator<E>it=new Iterator(){
+            Nodo<E>cursor=first;
+            @Override
+            public boolean hasNext() {
+                return cursor!=null;
             }
-            E data = actual.getContent();
-            actual = actual.getNext();
-            return data;
-        }
+
+            @Override
+            public E next() {
+                E content = cursor.getContent();
+                cursor=cursor.getNext();
+                return content;
+            }
+            
+        };
+        return it;
     }
+
+    
     
     @Override
     public boolean contains(E element) {

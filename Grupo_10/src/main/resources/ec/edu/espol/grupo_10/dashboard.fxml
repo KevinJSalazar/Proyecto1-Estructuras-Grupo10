@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -99,7 +98,7 @@
                <center>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                      <children>
-                        <AnchorPane fx:id="dashboardPrincipal" layoutX="8.0" layoutY="79.0" prefHeight="449.0" prefWidth="494.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="dashboardPrincipal" layoutX="8.0" layoutY="79.0" prefHeight="449.0" prefWidth="494.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="11.0" layoutY="12.0" prefHeight="426.0" prefWidth="478.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
@@ -162,12 +161,6 @@
                                           <Font size="14.0" />
                                        </font>
                                     </Button>
-                                    <TextArea fx:id="txtAreaInfo" layoutX="236.0" layoutY="73.0" prefHeight="147.0" prefWidth="230.0" stylesheets="@dashboardDesign.css">
-                                       <styleClass>
-                                          <String fx:value="white-bg" />
-                                          <String fx:value="shadow" />
-                                       </styleClass>
-                                    </TextArea>
                                     <Label alignment="BOTTOM_LEFT" layoutX="252.0" layoutY="236.0" prefHeight="18.0" prefWidth="70.0" text="Tipo:">
                                        <font>
                                           <Font name="Arial Rounded MT Bold" size="14.0" />
@@ -202,10 +195,15 @@
                                           <Cursor fx:constant="HAND" />
                                        </cursor>
                                     </Button>
+                                    <AnchorPane layoutX="243.0" layoutY="73.0" prefHeight="147.0" prefWidth="230.0">
+                                       <children>
+                                          <Text fx:id="txtAreaInfo" layoutX="6.0" layoutY="19.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="218.13674926757812" />
+                                       </children>
+                                    </AnchorPane>
                                  </children>
                               </AnchorPane>
                            </children></AnchorPane>
-                        <AnchorPane fx:id="dashboardVV" layoutX="97.0" layoutY="124.0" prefHeight="448.8" prefWidth="500.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                        <AnchorPane fx:id="dashboardVV" layoutX="97.0" layoutY="124.0" prefHeight="448.8" prefWidth="500.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                            <children>
                               <AnchorPane layoutX="11.0" layoutY="12.0" prefHeight="426.0" prefWidth="478.0" stylesheets="@dashboardDesign.css">
                                  <styleClass>
@@ -236,7 +234,7 @@
                                           </Text>
                                        </children>
                                     </AnchorPane>
-                                    <AnchorPane layoutX="14.0" layoutY="244.0" prefHeight="166.0" prefWidth="200.0" stylesheets="@dashboardDesign.css">
+                                    <AnchorPane layoutX="14.0" layoutY="238.0" prefHeight="166.0" prefWidth="200.0" stylesheets="@dashboardDesign.css">
                                        <styleClass>
                                           <String fx:value="white-bg" />
                                           <String fx:value="shadow" />
@@ -245,8 +243,12 @@
                                           <ImageView fx:id="imMostrarMiVehiculo" fitHeight="166.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </AnchorPane>
-                                    <Button contentDisplay="CENTER" layoutX="254.0" layoutY="383.0" mnemonicParsing="false" onMouseClicked="#fnEliminarVehiculo" prefHeight="26.0" prefWidth="178.0" style="-fx-background-color: #1c2833;" text="✗ Eliminar vehículo" textFill="WHITE" />
-                                    <TextArea fx:id="txtAreaInfoMiVeh" layoutX="232.0" layoutY="244.0" prefHeight="130.0" prefWidth="222.0" />
+                                    <Button contentDisplay="CENTER" layoutX="254.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#fnEliminarVehiculo" prefHeight="26.0" prefWidth="178.0" style="-fx-background-color: #1c2833;" text="✗ Eliminar vehículo" textFill="WHITE" />
+                                    <AnchorPane layoutX="228.0" layoutY="238.0" prefHeight="147.0" prefWidth="230.0">
+                                       <children>
+                                          <Text fx:id="txtAreaInfoMiVeh" layoutX="6.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="218.13674926757812" />
+                                       </children>
+                                    </AnchorPane>
                                  </children>
                               </AnchorPane>
                            </children>

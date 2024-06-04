@@ -5,7 +5,6 @@
 package ec.edu.espol.controllers;
 
 import ec.edu.espol.model.ArrayList;
-import ec.edu.espol.model.NegativeNumberException;
 import ec.edu.espol.model.Usuario;
 import ec.edu.espol.model.Vehiculo;
 import ec.edu.espol.util.UtileriaFunciones;
@@ -13,32 +12,25 @@ import ec.edu.espol.util.UtileriaMensaje;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 
 /**
  * FXML Controller class
@@ -66,19 +58,19 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane dashboardVV;
     @FXML
-    private TableView<?> tvVehiculo;
+    private TableView<Vehiculo> tvVehiculo;
     @FXML
-    private TableColumn<?, ?> tvColTipo;
+    private TableColumn<Vehiculo, String> tvColTipo;
     @FXML
-    private TableColumn<?, ?> tvColPlaca;
+    private TableColumn<Vehiculo, String> tvColPlaca;
     @FXML
-    private TableColumn<?, ?> tvColMarca;
+    private TableColumn<Vehiculo, String> tvColMarca;
     @FXML
-    private TableColumn<?, ?> tvColModelo;
+    private TableColumn<Vehiculo, String> tvColModelo;
     @FXML
-    private TableColumn<?, ?> tvColPrecio;
+    private TableColumn<Vehiculo, Double> tvColPrecio;
     @FXML
-    private TableColumn<?, ?> tvColKm;
+    private TableColumn<Vehiculo, Integer> tvColKm;
     @FXML
     private ComboBox<String> cbxFTipo;
     @FXML
@@ -102,13 +94,17 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField txtPrecio;
     
-    private ObservableList vehiculos;
+    // ATRIBUTOS NO FXML
+    private ObservableList obListVehiculos;
     
     private Usuario usuarioActual;
     FileChooser fc = new FileChooser();
     private File imgFile;
     private File imgCargarFile;
-        
+    private ArrayList<Vehiculo> vehiculos;
+    private int indiceActual = 0;
+    // ATRIBUTOS NO FXML
+    
     @FXML
     private ImageView imMostrarVehiculo;
     @FXML
@@ -116,13 +112,13 @@ public class DashboardController implements Initializable {
     @FXML
     private Button btnAtrás;
     @FXML
-    private TextArea txtAreaInfo;
+    private Text txtAreaInfo;
     @FXML
     private ImageView imMostrarMiVehiculo;
     @FXML
     private ImageView imCargarVehiculo;
     @FXML
-    private TextArea txtAreaInfoMiVeh;
+    private Text txtAreaInfoMiVeh;
     
 
     /**
@@ -132,13 +128,47 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cbxTipo.getItems().addAll("Carro", "Camioneta", "Moto");
         cargarFiltros();
+        vehiculos = Vehiculo.readFileSer();
+        navegarEnLista(vehiculos);
     }
 
     public void setUsuario(Usuario u){
         this.usuarioActual = u;
         lblNombreUsuario.setText(usuarioActual.getNombre());
     }
+    
+    public void navegarEnLista(ArrayList<Vehiculo> vehiculos){
+        indiceActual = 0;
+        actualizarVehiculo(vehiculos.get(indiceActual));
 
+        btnSiguiente.setDisable(vehiculos.isEmpty());
+        btnAtrás.setDisable(true);
+
+        btnSiguiente.setOnAction(event -> {
+            indiceActual++;
+            if (indiceActual >= vehiculos.size()) {
+                indiceActual = 0;
+            }
+            actualizarVehiculo(vehiculos.get(indiceActual));
+        });
+
+        btnAtrás.setOnAction(event -> {
+            indiceActual--;
+            if (indiceActual < 0) {
+                indiceActual = vehiculos.size() - 1; 
+            }
+            actualizarVehiculo(vehiculos.get(indiceActual));
+        });       
+    }
+
+    private void actualizarVehiculo(Vehiculo vehiculo) {
+        UtileriaFunciones.mostrarImagen(vehiculo.getPlaca(), imgFile, imMostrarVehiculo);
+        String mensaje = UtileriaFunciones.crearMensajeAuto(vehiculo.getTipo(), vehiculo.getPlaca(), vehiculo.getMarca(), vehiculo.getModelo(), vehiculo.getPrecio(), vehiculo.getKilometraje());
+        txtAreaInfo.setText(mensaje);
+        btnAtrás.setDisable(vehiculos.size() <= 1); 
+    }
+
+    
     @FXML
     public void cambiarPestañas(ActionEvent event){
         if(event.getSource() == btnSeccionPrincipal){
@@ -333,7 +363,7 @@ public class DashboardController implements Initializable {
     }
     
     private void cargarVehiculos(){
-        vehiculos=FXCollections.observableArrayList();
+        obListVehiculos=FXCollections.observableArrayList();
         tvColTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
         tvColPlaca.setCellValueFactory(new PropertyValueFactory<>("placa"));
         tvColMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
@@ -341,14 +371,13 @@ public class DashboardController implements Initializable {
         tvColPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
         tvColKm.setCellValueFactory(new PropertyValueFactory<>("kilometraje"));
         
-        Vehiculo v1=new Vehiculo("MMM","Toyota","ni idea","Carrito",15000,19900.00,usuarioActual);
-        vehiculos.add(v1);
-        
+//        Vehiculo v1=new Vehiculo("MMM","Toyota","ni idea","Carrito",15000,19900.00,usuarioActual);
+//        obListVehiculos.add(v1);
         ArrayList<Vehiculo> vehiculosSer=Vehiculo.readFileSer();
         for(int i=0;i<vehiculosSer.size();i++){
-            vehiculos.add(vehiculosSer.get(i));
+            obListVehiculos.add(vehiculosSer.get(i));
         }
-        this.tvVehiculo.setItems(vehiculos);
+        this.tvVehiculo.setItems(obListVehiculos);
     }
     
     private void cargarFiltros(){

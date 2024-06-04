@@ -77,6 +77,13 @@ public class UtileriaFunciones {
         return str.matches("\\d+(\\.\\d+)?");
     }
     
+    public static String crearMensajeAuto(String tipo, String placa, String marca, String modelo, int precio, double km){
+        String mensaje1 = "𝐃𝐄𝐓𝐀𝐋𝐋𝐄𝐒 𝐃𝐄𝐋 𝐀𝐔𝐓𝐎𝐌𝐎𝐓𝐎𝐑\n\n𝐓𝐢𝐩𝐨: "+tipo+"\n"+"𝐏𝐥𝐚𝐜𝐚: "+placa+"\n";
+        String mensaje2 = "𝐌𝐚𝐫𝐜𝐚: "+marca+"\n"+"𝐌𝐨𝐝𝐞𝐥𝐨: "+modelo+"\n";
+        String mensaje3 = "𝐏𝐫𝐞𝐜𝐢𝐨: "+precio+"\n"+"𝐊𝐢𝐥𝐨𝐦𝐞𝐭𝐫𝐚𝐣𝐞: "+km+"\n";
+        return mensaje1+mensaje2+mensaje3;
+    }
+    
     public static void guardarImagen(File imagen, String n) throws IOException{
     String nombreImagen = n+".png";
     if(imagen != null){
