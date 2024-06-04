@@ -7,8 +7,11 @@ package ec.edu.espol.controllers;
 import ec.edu.espol.model.Usuario;
 import ec.edu.espol.util.UtileriaFunciones;
 import ec.edu.espol.util.UtileriaMensaje;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -23,9 +26,11 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 /**
@@ -91,6 +96,8 @@ public class DashboardController implements Initializable {
     private TextField txtPrecio;
     
     private Usuario usuarioActual;
+    FileChooser fc = new FileChooser();
+    private File imgFile;
         
     @FXML
     private ImageView imMostrarVehiculo;
@@ -160,10 +167,24 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnLimpiarFiltro(MouseEvent event) {
+        cbxFTipo.getSelectionModel().clearSelection();
+        cbxFMarca.getSelectionModel().clearSelection();
+        cbxFModelo.getSelectionModel().clearSelection();
+        cbxFPrecio.getSelectionModel().clearSelection();
     }
 
     @FXML
     private void fnImportarImagen(MouseEvent event) {
+        fc.setTitle("Buscar Imagen");
+        fc.setInitialDirectory(new File(System.getProperty("user.home")));
+        fc.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Archivos de Imagen", "*.png", "*.jpg", "*.gif"),
+                new FileChooser.ExtensionFilter("Todos los archivos", "*.*"));
+        
+        imgFile = fc.showOpenDialog(null);
+        
+        if(imgFile != null)
+            imCargarVehiculo.setImage(new Image(imgFile.toURI().toString()));
     }
 
     @FXML
@@ -176,10 +197,13 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnActualizarInfoVehiculo(MouseEvent event) {
+        
     }
 
     @FXML
     private void fnLimpiar(MouseEvent event) {
     }
+    
+    
     
 }

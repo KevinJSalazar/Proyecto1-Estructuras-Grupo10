@@ -8,12 +8,17 @@ import ec.edu.espol.controllers.DashboardController;
 import ec.edu.espol.grupo_10.App;
 import static ec.edu.espol.grupo_10.App.loadFXML;
 import ec.edu.espol.model.Usuario;
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import javafx.event.Event;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -66,5 +71,33 @@ public class UtileriaFunciones {
     
     public static boolean verificarCondiciones(Boolean b){
         return b == false;
+    }
+    
+    public static void guardarImagen(File imagen, String n) throws IOException{
+    String nombreImagen = n+".png";
+    if(imagen != null){
+        String rutaProyecto = System.getProperty("user.dir")+File.separator+"src"+File.separator+"main"+File.separator+"resources";
+        String rutaCarpetaDestino = rutaProyecto + File.separator + "imagenesVehiculos";
+        File destinoCarpeta = new File(rutaCarpetaDestino);
+        if(!destinoCarpeta.exists())
+            destinoCarpeta.mkdir();
+
+        File destinoArchivo = new File(rutaCarpetaDestino + File.separator + nombreImagen);
+        if(destinoArchivo.exists())
+            destinoArchivo.delete();
+
+        Files.copy(imagen.toPath(), destinoArchivo.toPath(), StandardCopyOption.REPLACE_EXISTING);
+    } 
+    else 
+        throw new IOException();
+    }
+    
+    public static void mostrarImagen(String n, File imgFile, ImageView imv){
+        String nombreImagen = n+".png";
+        String rutaProyecto = System.getProperty("user.dir")+File.separator+"src"+File.separator+"main"+File.separator+"resources";
+        String rutaCarpetaDestino = rutaProyecto + File.separator + "imagenesVehiculos";
+        imgFile = new File(rutaCarpetaDestino, nombreImagen);
+        Image imagen = new Image(imgFile.toURI().toString());
+        imv.setImage(imagen);
     }
 }
