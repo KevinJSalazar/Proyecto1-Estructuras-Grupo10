@@ -16,6 +16,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +32,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -63,19 +66,19 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane dashboardVV;
     @FXML
-    private TableView<?> tvVehiculo;
+    private TableView<Vehiculo> tvVehiculo;
     @FXML
-    private TableColumn<?, ?> tvColTipo;
+    private TableColumn<Vehiculo, String> tvColTipo;
     @FXML
-    private TableColumn<?, ?> tvColPlaca;
+    private TableColumn<Vehiculo, String> tvColPlaca;
     @FXML
-    private TableColumn<?, ?> tvColMarca;
+    private TableColumn<Vehiculo, String> tvColMarca;
     @FXML
-    private TableColumn<?, ?> tvColModelo;
+    private TableColumn<Vehiculo, String> tvColModelo;
     @FXML
-    private TableColumn<?, ?> tvColPrecio;
+    private TableColumn<Vehiculo, Double> tvColPrecio;
     @FXML
-    private TableColumn<?, ?> tvColKm;
+    private TableColumn<Vehiculo, Integer> tvColKm;
     @FXML
     private ComboBox<String> cbxFTipo;
     @FXML
@@ -98,6 +101,8 @@ public class DashboardController implements Initializable {
     private TextField txtKm;
     @FXML
     private TextField txtPrecio;
+    
+    private ObservableList vehiculos;
     
     private Usuario usuarioActual;
     FileChooser fc = new FileChooser();
@@ -127,6 +132,7 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cbxTipo.getItems().addAll("Carro", "fdf", "Opción 3");
         cbxTipo.getSelectionModel().selectFirst();
+        cargarVehiculos();
     }
 
     public void setUsuario(Usuario u){
@@ -309,6 +315,23 @@ public class DashboardController implements Initializable {
         txtMarca.clear();
     }
     
-    
+    private void cargarVehiculos(){
+        vehiculos=FXCollections.observableArrayList();
+        tvColTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        tvColPlaca.setCellValueFactory(new PropertyValueFactory<>("placa"));
+        tvColMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
+        tvColModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
+        tvColPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        tvColKm.setCellValueFactory(new PropertyValueFactory<>("kilometraje"));
+        //aqui va una iteración del ArrayList:v
+        
+        Vehiculo v1=new Vehiculo("MMM","Toyota","ni idea","Carrito",15000,19900.00,usuarioActual);
+        vehiculos.add(v1);
+//        ArrayList<Vehiculo> vehSer=Vehiculo.readFileSer();
+//        for(int i=0;i<vehSer.size();i++){
+//            vehiculos.add(vehSer.get(i));
+//        }
+        this.tvVehiculo.setItems(vehiculos);
+    }
     
 }
