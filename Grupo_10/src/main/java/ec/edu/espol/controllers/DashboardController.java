@@ -4,7 +4,10 @@
  */
 package ec.edu.espol.controllers;
 
+import ec.edu.espol.model.ArrayList;
+import ec.edu.espol.model.NegativeNumberException;
 import ec.edu.espol.model.Usuario;
+import ec.edu.espol.model.Vehiculo;
 import ec.edu.espol.util.UtileriaFunciones;
 import ec.edu.espol.util.UtileriaMensaje;
 import java.io.File;
@@ -19,6 +22,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
@@ -73,17 +77,17 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<?, ?> tvColKm;
     @FXML
-    private ComboBox<?> cbxFTipo;
+    private ComboBox<String> cbxFTipo;
     @FXML
-    private ComboBox<?> cbxFMarca;
+    private ComboBox<String> cbxFMarca;
     @FXML
-    private ComboBox<?> cbxFModelo;
+    private ComboBox<String> cbxFModelo;
     @FXML
-    private ComboBox<?> cbxFPrecio;
+    private ComboBox<String> cbxFPrecio;
     @FXML
     private AnchorPane dashboardAV;
     @FXML
-    private ComboBox<?> cbxTipo;
+    private ComboBox<String> cbxTipo;
     @FXML
     private TextField txtPlaca;
     @FXML
@@ -120,7 +124,8 @@ public class DashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        // TODO
+        cbxTipo.getItems().addAll("Carro", "fdf", "Opción 3");
+        cbxTipo.getSelectionModel().selectFirst();
     }
 
     public void setUsuario(Usuario u){
@@ -163,6 +168,45 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnFiltrar(MouseEvent event) {
+//        try{
+//            if(((String)this.minPrecio.getText()).equals(""))
+//                precioMin = 1;
+//            else precioMin = Integer.parseInt((String)this.minPrecio.getText());
+//
+//            if(((String)this.maxPrecio.getText()).equals(""))
+//                precioMax = Integer.MAX_VALUE;
+//            else precioMax = Integer.parseInt((String)this.maxPrecio.getText());
+//
+//            if(((String)this.minAño.getText()).equals(""))
+//                añoMin = 1;
+//            else añoMin = Integer.parseInt((String)this.minAño.getText());
+//
+//            if(((String)this.maxAño.getText()).equals(""))
+//                añoMax = Integer.MAX_VALUE;
+//            else añoMax = Integer.parseInt((String)this.maxAño.getText());
+//
+//            if(((String)this.minRec.getText()).equals(""))
+//                recorridoMin = 0;
+//            else recorridoMin = Double.parseDouble((String)this.minRec.getText());
+//
+//            if(((String)this.maxRec.getText()).equals(""))
+//                recorridoMax = Double.MAX_VALUE;
+//            else recorridoMax = Double.parseDouble((String)this.maxRec.getText());
+//            
+//            if((String)cbTipoVeh.getValue() != null)
+//                tipo = (String)cbTipoVeh.getValue();
+//            mostrarVehiculos(Vehiculo.filtrarVehiculos(vehiculos, tipo, recorridoMin, recorridoMax, añoMin, añoMax, precioMin, precioMax)); 
+//            mostrarImagenesVehiculos(Vehiculo.filtrarVehiculos(vehiculos, tipo, recorridoMin, recorridoMax, añoMin, añoMax, precioMin, precioMax));
+//        } catch(NegativeNumberException nn){
+//            Alert mensaje = new Alert(Alert.AlertType.ERROR, "Ingrese valores numéricos válidos.");
+//            mensaje.show();
+//        } catch(NumberFormatException n){
+//            Alert mensaje = new Alert(Alert.AlertType.ERROR, "Ingrese valores numéricos válidos.");
+//            mensaje.show();
+//        } catch(Exception ex){
+//            Alert mensaje = new Alert(Alert.AlertType.ERROR, "Ha ocurrido un error.");
+//            mensaje.show();
+//        }
     }
 
     @FXML
@@ -189,6 +233,24 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnAgregarVehiculo(MouseEvent event) {
+        String placa = (String)this.txtPlaca.getText();
+        String marca = (String)this.txtMarca.getText();
+        String modelo = (String)this.txtModelo.getText();
+        String tipo = (String)this.cbxTipo.getItems().toString();
+        String stKilometraje = (String)this.txtKm.getText();
+        String stPrecio = (String)this.txtPrecio.getText();
+        
+        if(placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || tipo.isEmpty() || stKilometraje.isEmpty() || stPrecio.isEmpty()){
+            UtileriaMensaje.generarAlertaError("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
+        }
+        else{
+            ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
+            double kilometraje = Double.parseDouble(stKilometraje);
+            int precion = Integer.parseInt(stPrecio);
+            Vehiculo newVehiculo = new Vehiculo(placa, marca, modelo, tipo, precion, kilometraje, usuarioActual);
+            vehiculosReg.addLast(newVehiculo);
+            Vehiculo.saveListVehiculosSer(vehiculosReg);
+        }
     }
 
     @FXML
@@ -197,11 +259,44 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnActualizarInfoVehiculo(MouseEvent event) {
-        
+        ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
+        String placa = (String)this.txtPlaca.getText();
+        if (Vehiculo.checkPlaca(vehiculosReg, placa)){
+            Vehiculo vehiculoAct = Vehiculo.filtrarPlaca(vehiculosReg, placa);
+            String marca = (String)this.txtMarca.getText();
+            String modelo = (String)this.txtModelo.getText();
+            String tipo = (String)this.cbxTipo.getItems().toString();
+            String stKilometraje = (String)this.txtKm.getText();
+            String stPrecio = (String)this.txtPrecio.getText();
+            
+            if (!marca.isEmpty()){
+                vehiculoAct.setMarca(marca);
+            }
+            if (!modelo.isEmpty()){
+                vehiculoAct.setModelo(modelo);
+            }
+            if (!tipo.isEmpty()){
+                vehiculoAct.setTipo(tipo);
+            }
+            if (!stKilometraje.isEmpty()){
+                double kilometraje = Double.parseDouble(stKilometraje);
+                vehiculoAct.setKilometraje(kilometraje);
+            }
+            if (!stPrecio.isEmpty()){
+                int precion = Integer.parseInt(stPrecio);
+                vehiculoAct.setPrecio(precion);
+            }
+        }
     }
 
     @FXML
     private void fnLimpiar(MouseEvent event) {
+        cbxTipo.getSelectionModel().clearSelection();
+        txtPrecio.clear();
+        txtModelo.clear();
+        txtKm.clear();
+        txtPlaca.clear();
+        txtMarca.clear();
     }
     
     
