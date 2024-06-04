@@ -19,7 +19,10 @@ public class Pruebas {
 //        System.out.println(propioArray.size());
 //        propioArray.addFirst("nothing");
         
-        List<Vehiculo> vehiculos = new SimpleLinkedList<>();
+//        List<Vehiculo> vehiculos = Vehiculo.readFileSer();
+//        for (int i = 0; i < vehiculos.size(); i++){
+//            System.out.println(vehiculos.get(i));
+//        }
 
         // Agregar algunos vehículos a la lista
 //        vehiculos.addLast(new Vehiculo("AAA111", "Toyota", "Corolla", 20000, 15000.5));
@@ -29,11 +32,11 @@ public class Pruebas {
 //        vehiculos.addLast(new Vehiculo("EEE555", "Ford", "Fiesta", 15000, 30000.0));
 
         // Filtrar los vehículos
-        List<Vehiculo> vehiculosFiltrados = filtrarVehiculos(vehiculos, "Toyota", "Corolla", 15000, 30000, 10000, 20000);
+//        List<Vehiculo> vehiculosFiltrados = filtrarVehiculos(vehiculos, "Toyota", "Corolla", 15000, 30000, 10000, 20000);
 
         // Imprimir los vehículos filtrados
-        for (int i = 0; i < vehiculosFiltrados.size(); i++) {
-            System.out.println(vehiculosFiltrados.get(i));
-        }
+//        for (int i = 0; i < vehiculosFiltrados.size(); i++) {
+//            System.out.println(vehiculosFiltrados.get(i));
+//        }
     }
 }

@@ -16,6 +16,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,6 +32,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
@@ -99,6 +102,8 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField txtPrecio;
     
+    private ObservableList vehiculos;
+    
     private Usuario usuarioActual;
     FileChooser fc = new FileChooser();
     private File imgFile;
@@ -125,8 +130,8 @@ public class DashboardController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
-        cbxTipo.getItems().addAll("Carro", "fdf", "Opción 3");
-        cbxTipo.getSelectionModel().selectFirst();
+        cbxTipo.getItems().addAll("Carro", "Camioneta", "Moto");
+        cargarFiltros();
     }
 
     public void setUsuario(Usuario u){
@@ -144,6 +149,7 @@ public class DashboardController implements Initializable {
             dashboardPrincipal.setVisible(false);
             dashboardVV.setVisible(true);
             dashboardAV.setVisible(false);
+            cargarVehiculos();
         } else if(event.getSource() == btnSeccionAgregar){
             dashboardPrincipal.setVisible(false);
             dashboardVV.setVisible(false);
@@ -167,35 +173,41 @@ public class DashboardController implements Initializable {
         }
     }
 
-    @FXML
-    private void fnFiltrar(MouseEvent event) {
+//    @FXML
+//    private void fnFiltrar(MouseEvent event) {
+//        String tipo = this.cbxFTipo.getSelectionModel().getSelectedItem();
+//        String marca = this.cbxFMarca.getSelectionModel().getSelectedItem();
+//        String modelo = this.cbxFModelo.getSelectionModel().getSelectedItem();
+//        String precio = this.cbxFPrecio.getSelectionModel().getSelectedItem();
+////        String kilometraje = this.cbxFKilometraje.getSelectionModel().getSelectedItem();
+//        int precioMin, precioMax;
+//        double kilometrajeMin, kilometrajeMax;
 //        try{
-//            if(((String)this.minPrecio.getText()).equals(""))
-//                precioMin = 1;
-//            else precioMin = Integer.parseInt((String)this.minPrecio.getText());
-//
-//            if(((String)this.maxPrecio.getText()).equals(""))
+//            if(precio.isEmpty()){
+//                precioMin = 1; precioMax = Integer.MAX_VALUE;
+//            } else if (precio.contains("+")){
+//                precioMin = Integer.parseInt(precio.split("\\+")[0]);
 //                precioMax = Integer.MAX_VALUE;
-//            else precioMax = Integer.parseInt((String)this.maxPrecio.getText());
-//
-//            if(((String)this.minAño.getText()).equals(""))
-//                añoMin = 1;
-//            else añoMin = Integer.parseInt((String)this.minAño.getText());
-//
-//            if(((String)this.maxAño.getText()).equals(""))
-//                añoMax = Integer.MAX_VALUE;
-//            else añoMax = Integer.parseInt((String)this.maxAño.getText());
-//
-//            if(((String)this.minRec.getText()).equals(""))
-//                recorridoMin = 0;
-//            else recorridoMin = Double.parseDouble((String)this.minRec.getText());
-//
-//            if(((String)this.maxRec.getText()).equals(""))
-//                recorridoMax = Double.MAX_VALUE;
-//            else recorridoMax = Double.parseDouble((String)this.maxRec.getText());
+//            } else{
+//                String[] precios = precio.split(" - ");
+//                precioMin = Integer.parseInt(precios[0]);
+//                precioMax = Integer.parseInt(precios[1]);
+//            }
 //            
+//            if(kilometraje.isEmpty()){
+//                kilometrajeMin = 1; kilometrajeMax = Integer.MAX_VALUE;
+//            } else if (precio.contains("+")){
+//                kilometrajeMin = Double.parseDouble(precio.split("\\+")[0]);
+//                kilometrajeMax = Double.MAX_VALUE;
+//            } else{
+//                String[] precios = precio.split(" - ");
+//                kilometrajeMin = Double.parseDouble(precios[0]);
+//                kilometrajeMax = Double.parseDouble(precios[1]);
+//            }
+            
 //            if((String)cbTipoVeh.getValue() != null)
 //                tipo = (String)cbTipoVeh.getValue();
+//            
 //            mostrarVehiculos(Vehiculo.filtrarVehiculos(vehiculos, tipo, recorridoMin, recorridoMax, añoMin, añoMax, precioMin, precioMax)); 
 //            mostrarImagenesVehiculos(Vehiculo.filtrarVehiculos(vehiculos, tipo, recorridoMin, recorridoMax, añoMin, añoMax, precioMin, precioMax));
 //        } catch(NegativeNumberException nn){
@@ -208,7 +220,7 @@ public class DashboardController implements Initializable {
 //            Alert mensaje = new Alert(Alert.AlertType.ERROR, "Ha ocurrido un error.");
 //            mensaje.show();
 //        }
-    }
+//    }
 
     @FXML
     private void fnLimpiarFiltro(MouseEvent event) {
@@ -216,6 +228,7 @@ public class DashboardController implements Initializable {
         cbxFMarca.getSelectionModel().clearSelection();
         cbxFModelo.getSelectionModel().clearSelection();
         cbxFPrecio.getSelectionModel().clearSelection();
+//        cbxFKilometraje.getSelectionModel().clearSelection();
     }
 
     @FXML
@@ -234,26 +247,33 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnAgregarVehiculo(MouseEvent event) throws IOException {
+        ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
         String placa = (String)this.txtPlaca.getText();
         String marca = (String)this.txtMarca.getText();
         String modelo = (String)this.txtModelo.getText();
-        String tipo = (String)this.cbxTipo.getItems().toString();
+        String tipo = (String)this.cbxTipo.getSelectionModel().getSelectedItem();
         String stKilometraje = (String)this.txtKm.getText();
         String stPrecio = (String)this.txtPrecio.getText();
-        ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
+        
         if(placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || tipo.isEmpty() || stKilometraje.isEmpty() || stPrecio.isEmpty()){
             UtileriaMensaje.generarAlertaError("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
         }
-        else{
+        else if(Vehiculo.checkPlaca(vehiculosReg, placa)){
+            UtileriaMensaje.generarAlertaError("Vehiculo existente", "La placa del vehículo que intenta agregar ya se encuentra registrada");
+        }
+        else {
             try{
                 double kilometraje; int precio;
                 if(UtileriaFunciones.verificacionesNumericas(stKilometraje) && UtileriaFunciones.verificacionesNumericas(stPrecio)){
                     kilometraje = Double.parseDouble(stKilometraje);
                     precio = Integer.parseInt(stPrecio);
-                    Vehiculo newVehiculo = new Vehiculo(placa, marca, modelo, tipo, precio, kilometraje, usuarioActual);
-                    UtileriaFunciones.guardarImagen(imgCargarFile, placa);
-                    vehiculosReg.addLast(newVehiculo);
-                    Vehiculo.saveListVehiculosSer(vehiculosReg);
+                    if(UtileriaMensaje.generarAlertaConfirmacion("Confirmar registro", "¿Está seguro de registrar este vehiculo?")){
+                        Vehiculo newVehiculo = new Vehiculo(placa, marca, modelo, tipo, precio, kilometraje, usuarioActual);
+                        UtileriaFunciones.guardarImagen(imgCargarFile, placa);
+                        vehiculosReg.addLast(newVehiculo);
+                        Vehiculo.saveListVehiculosSer(vehiculosReg);
+                        UtileriaMensaje.generarAlertaInfo("Registro exitoso", "¡El vehiculo con placa "+ placa +" se ha registrado!");
+                    }
                 } else{
                     UtileriaMensaje.generarAlertaError("Valores no permitidos", "Ingrese valores válidos.");
                 }  
@@ -265,6 +285,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnEliminarVehiculo(MouseEvent event) {
+        
     }
 
     @FXML
@@ -288,14 +309,16 @@ public class DashboardController implements Initializable {
             if (!tipo.isEmpty()){
                 vehiculoAct.setTipo(tipo);
             }
-            if (!stKilometraje.isEmpty()){
+            if (!stKilometraje.isEmpty() && UtileriaFunciones.verificacionesNumericas(stKilometraje)){
                 double kilometraje = Double.parseDouble(stKilometraje);
                 vehiculoAct.setKilometraje(kilometraje);
             }
-            if (!stPrecio.isEmpty()){
+            if (!stPrecio.isEmpty() && UtileriaFunciones.verificacionesNumericas(stPrecio)){
                 int precion = Integer.parseInt(stPrecio);
                 vehiculoAct.setPrecio(precion);
             }
+        } else{
+            UtileriaMensaje.generarAlertaError("Vehiculo inexistente", "La placa del vehículo que intenta modificar no se encuentra registrada");
         }
     }
 
@@ -309,6 +332,43 @@ public class DashboardController implements Initializable {
         txtMarca.clear();
     }
     
+    private void cargarVehiculos(){
+        vehiculos=FXCollections.observableArrayList();
+        tvColTipo.setCellValueFactory(new PropertyValueFactory<>("tipo"));
+        tvColPlaca.setCellValueFactory(new PropertyValueFactory<>("placa"));
+        tvColMarca.setCellValueFactory(new PropertyValueFactory<>("marca"));
+        tvColModelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
+        tvColPrecio.setCellValueFactory(new PropertyValueFactory<>("precio"));
+        tvColKm.setCellValueFactory(new PropertyValueFactory<>("kilometraje"));
+        
+        Vehiculo v1=new Vehiculo("MMM","Toyota","ni idea","Carrito",15000,19900.00,usuarioActual);
+        vehiculos.add(v1);
+        
+        ArrayList<Vehiculo> vehiculosSer=Vehiculo.readFileSer();
+        for(int i=0;i<vehiculosSer.size();i++){
+            vehiculos.add(vehiculosSer.get(i));
+        }
+        this.tvVehiculo.setItems(vehiculos);
+    }
     
-    
+    private void cargarFiltros(){
+        cbxFTipo.getItems().add("Todos");
+        cbxFMarca.getItems().add("Todos");
+        cbxFModelo.getItems().add("Todos");
+        cbxFPrecio.getItems().addAll("Todos", "0 - 2000", "2001 - 5000" , "50001 - 8000", "8000+");
+//        cbxFKilometraje.getItems().addAll("Todos", "0 - 2000", "2001 - 5000" , "50001 - 8000", "8000+");
+
+        ArrayList<String> tipos = Vehiculo.getTipos();
+        for(int i = 0; i < tipos.size(); i++){
+            cbxFTipo.getItems().add(tipos.get(i));
+        }
+        ArrayList<String> marcas = Vehiculo.getMarcas();
+        for(int i = 0; i < marcas.size(); i++){
+            cbxFTipo.getItems().add(marcas.get(i));
+        }
+        ArrayList<String> modelos = Vehiculo.getModelos();
+        for(int i = 0; i < modelos.size(); i++){
+            cbxFTipo.getItems().add(modelos.get(i));
+        }
+    }
 }
