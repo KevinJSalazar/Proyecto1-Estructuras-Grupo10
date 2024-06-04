@@ -132,7 +132,7 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         cbxTipo.getItems().addAll("Carro", "fdf", "Opción 3");
         cbxTipo.getSelectionModel().selectFirst();
-        cargarVehiculos();
+        
     }
 
     public void setUsuario(Usuario u){
@@ -150,6 +150,7 @@ public class DashboardController implements Initializable {
             dashboardPrincipal.setVisible(false);
             dashboardVV.setVisible(true);
             dashboardAV.setVisible(false);
+            cargarVehiculos();
         } else if(event.getSource() == btnSeccionAgregar){
             dashboardPrincipal.setVisible(false);
             dashboardVV.setVisible(false);
@@ -243,7 +244,7 @@ public class DashboardController implements Initializable {
         String placa = (String)this.txtPlaca.getText();
         String marca = (String)this.txtMarca.getText();
         String modelo = (String)this.txtModelo.getText();
-        String tipo = (String)this.cbxTipo.getItems().toString();
+        String tipo = (String)this.cbxTipo.getSelectionModel().getSelectedItem();
         String stKilometraje = (String)this.txtKm.getText();
         String stPrecio = (String)this.txtPrecio.getText();
         ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
@@ -327,10 +328,10 @@ public class DashboardController implements Initializable {
         
         Vehiculo v1=new Vehiculo("MMM","Toyota","ni idea","Carrito",15000,19900.00,usuarioActual);
         vehiculos.add(v1);
-//        ArrayList<Vehiculo> vehSer=Vehiculo.readFileSer();
-//        for(int i=0;i<vehSer.size();i++){
-//            vehiculos.add(vehSer.get(i));
-//        }
+        ArrayList<Vehiculo> vehiculosSer=Vehiculo.readFileSer();
+        for(int i=0;i<vehiculosSer.size();i++){
+            vehiculos.add(vehiculosSer.get(i));
+        }
         this.tvVehiculo.setItems(vehiculos);
     }
     
