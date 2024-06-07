@@ -132,6 +132,14 @@ public class DashboardController implements Initializable {
             }
         cargarFiltros();
         cbxTipo.getItems().addAll("Carro", "Moto", "Camioneta");
+        
+        ////////
+        cbxTipo.getSelectionModel().selectFirst();
+        ////////
+        
+//        for (int i = 0; i < usuarioActual.getVehiculos().size(); i++){
+//            System.out.println(usuarioActual.getVehiculos().get(i));
+//        }
     }
 
     public void setUsuario(Usuario u){
@@ -284,7 +292,7 @@ public class DashboardController implements Initializable {
         String stKilometraje = (String)this.txtKm.getText();
         String stPrecio = (String)this.txtPrecio.getText();
         ArrayList<Vehiculo> vehiculosReg = Vehiculo.readFileSer();
-        if(placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || tipo.isEmpty() || stKilometraje.isEmpty() || stPrecio.isEmpty()){
+        if(placa.isEmpty() || marca.isEmpty() || modelo.isEmpty() || stKilometraje.isEmpty() || stPrecio.isEmpty()){
             UtileriaMensaje.generarAlertaError("Información incompleta", "Debe rellenar todos los campos obligatoriamente");
         }
         else if(Vehiculo.checkPlaca(vehiculosReg, placa)){
@@ -296,9 +304,9 @@ public class DashboardController implements Initializable {
                 if(UtileriaFunciones.verificacionesNumericas(stKilometraje) && UtileriaFunciones.verificacionesNumericas(stPrecio)){
                     kilometraje = Double.parseDouble(stKilometraje);
                     precio = Integer.parseInt(stPrecio);
+                    UtileriaFunciones.guardarImagen(imgCargarFile, placa);
                     if(UtileriaMensaje.generarAlertaConfirmacion("Confirmar registro", "¿Está seguro de registrar este vehiculo?")){
                         Vehiculo newVehiculo = new Vehiculo(placa, marca, modelo, tipo, precio, kilometraje, usuarioActual);
-                        UtileriaFunciones.guardarImagen(imgCargarFile, placa);
                         vehiculosReg.addLast(newVehiculo);
                         Vehiculo.saveListVehiculosSer(vehiculosReg);
                         UtileriaMensaje.generarAlertaInfo("Registro exitoso", "¡El vehiculo con placa "+ placa +" se ha registrado!");
@@ -324,7 +332,7 @@ public class DashboardController implements Initializable {
             Vehiculo vehiculoAct = Vehiculo.filtrarPlaca(vehiculosReg, placa);
             String marca = (String)this.txtMarca.getText();
             String modelo = (String)this.txtModelo.getText();
-            String tipo = (String)this.cbxTipo.getItems().toString();
+            String tipo = (String)this.cbxTipo.getSelectionModel().getSelectedItem();
             String stKilometraje = (String)this.txtKm.getText();
             String stPrecio = (String)this.txtPrecio.getText();
             
@@ -344,6 +352,12 @@ public class DashboardController implements Initializable {
             if (!stPrecio.isEmpty()){
                 int precion = Integer.parseInt(stPrecio);
                 vehiculoAct.setPrecio(precion);
+            }
+            try{
+                Vehiculo.saveListVehiculosSer(vehiculosReg);
+                UtileriaMensaje.generarAlertaInfo("Actualizacion exitosa", "¡El vehiculo con placa "+ placa +" ha sido modificada!");
+            } catch(Exception e){
+                UtileriaMensaje.generarAlertaError("Error ", "No se pudo actualizar el vehiculo de placa" + placa);
             }
         }
     }
@@ -370,9 +384,9 @@ public class DashboardController implements Initializable {
         Vehiculo v1=new Vehiculo("MMM","Toyota","ni idea","Carrito",15000,19900.00,usuarioActual);
         obListVehiculos.add(v1);
         
-        ArrayList<Vehiculo> vehiculosSer=Vehiculo.readFileSer();
-        for(int i=0;i<vehiculosSer.size();i++){
-            obListVehiculos.add(vehiculosSer.get(i));
+        vehiculos = Vehiculo.readFileSer();
+        for(int i = 0; i < vehiculos.size(); i++){
+            obListVehiculos.add(vehiculos.get(i));
         }
         this.tvVehiculo.setItems(obListVehiculos);
     }
@@ -401,5 +415,11 @@ public class DashboardController implements Initializable {
         cbxFMarca.getItems().setAll("Todos");
         cbxFModelo.getItems().setAll("Todos");
         cbxFPrecio.getItems().setAll("Todos");
+        //////
+        cbxFTipo.getSelectionModel().selectFirst();
+        cbxFMarca.getSelectionModel().selectFirst();
+        cbxFModelo.getSelectionModel().selectFirst();
+        cbxFPrecio.getSelectionModel().selectFirst();
+        //////
     }
 }

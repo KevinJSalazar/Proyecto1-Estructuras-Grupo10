@@ -60,7 +60,7 @@ public class Vehiculo implements Serializable{
         }
         return vehiculos;
     }
-//    
+    
     public static boolean checkPlaca(List<Vehiculo> vehiculos, String placa){
         for(int i = 0; i < vehiculos.size(); i++){
             if(vehiculos.get(i).placa.equals(placa)){
@@ -77,20 +77,26 @@ public class Vehiculo implements Serializable{
         }
         return null;
     }
-//    
+    
     public static List<Vehiculo> filtrarVehiculos(List<Vehiculo> vehiculos, String marca, String modelo, int preMin, int preMax, double kilMin, double kilMax){
         if(kilMin < 0 || kilMax < 0 || preMin < 1 || preMax < 0){
             throw new NegativeNumberException();
         }
         List<Vehiculo> vehiculosFil = new SimpleLinkedList<>();
+        Vehiculo v;
         for(int i = 0; i < vehiculos.size(); i++){
-            Vehiculo v = vehiculos.get(i);
-            if(v.marca.equals(marca) && v.modelo.equals(modelo)){
-                if(kilMin <= v.kilometraje && v.kilometraje <= kilMax){
-                    if(preMin <= v.precio && v.precio <= preMax)
-                        vehiculosFil.addLast(vehiculos.get(i));
+            v = vehiculos.get(i);
+//            if(tipo.isEmpty() || tipo.equals("Todos") || tipo.equals(v.tipo)){
+                if(marca.isEmpty() || marca.equals("Todos") || marca.equals(v.marca)){
+                    if(modelo.isEmpty() || modelo.equals("Todos") || modelo.equals(v.tipo)){
+                        if(kilMin <= v.kilometraje && v.kilometraje <= kilMax){
+                            if(preMin <= v.precio && v.precio <= preMax){
+                                vehiculosFil.addLast(vehiculos.get(i));
+                            }
+                        }
+                    }
                 }
-            }
+//            }
         }
         return vehiculosFil;
     }

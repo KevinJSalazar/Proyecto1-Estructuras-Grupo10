@@ -225,7 +225,7 @@ public class SimpleLinkedList<E> implements List<E>, Iterable<E>, Serializable{
     public boolean contains(E element) {
         if(element!=null){
             for(int i=0;i<this.size();i++){
-                if(this.get(i)==element) return true;
+                if(this.get(i).equals(element)) return true;
             }
         }
         return false;
