@@ -5,6 +5,7 @@
 package ec.edu.espol.controllers;
 
 import ec.edu.espol.model.ArrayList;
+import ec.edu.espol.model.List;
 import ec.edu.espol.model.Usuario;
 import ec.edu.espol.model.Vehiculo;
 import ec.edu.espol.util.UtileriaFunciones;
@@ -98,11 +99,16 @@ public class DashboardController implements Initializable {
     private ObservableList obListVehiculos;
     
     private Usuario usuarioActual;
+    private Vehiculo vehiculoSeleccionadoActual;
     FileChooser fc = new FileChooser();
     private File imgFile;
     private File imgCargarFile;
+    private File imgFileSeleccionado;
     private ArrayList<Vehiculo> vehiculos;
     private int indiceActual = 0;
+    private int cantidadAutos;
+    private int cantidadCamionetas;
+    private int cantidadMotos;
     // ATRIBUTOS NO FXML
     
     @FXML
@@ -119,6 +125,8 @@ public class DashboardController implements Initializable {
     private ImageView imCargarVehiculo;
     @FXML
     private Text txtAreaInfoMiVeh;
+    @FXML
+    private Button btnEliminarVehiculo;
     
 
     /**
@@ -140,6 +148,12 @@ public class DashboardController implements Initializable {
 //        for (int i = 0; i < usuarioActual.getVehiculos().size(); i++){
 //            System.out.println(usuarioActual.getVehiculos().get(i));
 //        }
+
+        actualizarContabilidad();
+        tvVehiculo.getSelectionModel().selectedItemProperty().addListener((observable, oldValue, newValue) -> {
+            seleccionTV();
+        });
+        
     }
 
     public void setUsuario(Usuario u){
@@ -170,6 +184,15 @@ public class DashboardController implements Initializable {
             actualizarVehiculo(vehiculos.get(indiceActual));
         });       
     }
+    
+    private void actualizarContabilidad(){
+        cantidadAutos = UtileriaFunciones.contarTipos(Vehiculo.readFileSer(), "Carro");
+        cantidadCamionetas = UtileriaFunciones.contarTipos(Vehiculo.readFileSer(), "Camioneta");
+        cantidadMotos = UtileriaFunciones.contarTipos(Vehiculo.readFileSer(), "Moto");
+        lblCantAutos.setText(String.valueOf(cantidadAutos));
+        lblCantCamionetas.setText(String.valueOf(cantidadCamionetas));
+        lblCantMotos.setText(String.valueOf(cantidadMotos)); 
+    }
 
     private void actualizarVehiculo(Vehiculo vehiculo) {
         UtileriaFunciones.mostrarImagen(vehiculo.getPlaca(), imgFile, imMostrarVehiculo);
@@ -195,6 +218,7 @@ public class DashboardController implements Initializable {
             dashboardVV.setVisible(true);
             dashboardAV.setVisible(false);
             cargarVehiculos();
+            actualizarContabilidad();
         } else if(event.getSource() == btnSeccionAgregar){
             dashboardPrincipal.setVisible(false);
             dashboardVV.setVisible(false);
@@ -279,8 +303,12 @@ public class DashboardController implements Initializable {
         
         imgCargarFile = fc.showOpenDialog(null);
         
-        if(imgCargarFile != null)
-            imCargarVehiculo.setImage(new Image(imgCargarFile.toURI().toString()));
+        if(imgCargarFile != null){
+            Image imagen = new Image(imgCargarFile.toURI().toString()); 
+            // Ajustando imagen
+            imagen = UtileriaFunciones.ajustarTamañoImagen(imagen, imCargarVehiculo.getFitWidth(), imCargarVehiculo.getFitHeight());
+            imCargarVehiculo.setImage(imagen);
+        }
     }
 
     @FXML
@@ -309,7 +337,9 @@ public class DashboardController implements Initializable {
                         Vehiculo newVehiculo = new Vehiculo(placa, marca, modelo, tipo, precio, kilometraje, usuarioActual);
                         vehiculosReg.addLast(newVehiculo);
                         Vehiculo.saveListVehiculosSer(vehiculosReg);
+                        UtileriaFunciones.actualizar(usuarioActual, newVehiculo); // Añadido
                         UtileriaMensaje.generarAlertaInfo("Registro exitoso", "¡El vehiculo con placa "+ placa +" se ha registrado!");
+                        actualizarContabilidad();
                     }
                 } else{
                     UtileriaMensaje.generarAlertaError("Valores no permitidos", "Ingrese valores válidos.");
@@ -322,6 +352,13 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void fnEliminarVehiculo(MouseEvent event) {
+        if(UtileriaMensaje.generarAlertaConfirmacion("Eliminar vehículo", "¿Está seguro de eliminar el vehículo de placa "+vehiculoSeleccionadoActual.getPlaca()+"?")){
+            UtileriaFunciones.eliminarMiVehiculo(usuarioActual, vehiculoSeleccionadoActual);
+        } else{}
+        limpiarSeleccion();
+        btnEliminarVehiculo.setVisible(false);
+        cargarVehiculos();
+        actualizarContabilidad();
     }
 
     @FXML
@@ -370,6 +407,8 @@ public class DashboardController implements Initializable {
         txtKm.clear();
         txtPlaca.clear();
         txtMarca.clear();
+        imCargarVehiculo.setImage(null); 
+        imgCargarFile = null;
     }
     
     private void cargarVehiculos(){
@@ -408,6 +447,24 @@ public class DashboardController implements Initializable {
         for(int i = 0; i < modelos.size(); i++){
             cbxFModelo.getItems().add(modelos.get(i));
         }
+    }
+    
+    private void seleccionTV(){
+        ObservableList<Vehiculo>  filaSeleccionada = tvVehiculo.getSelectionModel().getSelectedItems();
+        if(filaSeleccionada.size() == 1){
+            Vehiculo vehiculoSeleccionado = filaSeleccionada.get(0);
+            UtileriaFunciones.mostrarImagen(vehiculoSeleccionado.getPlaca(), imgFileSeleccionado, imMostrarMiVehiculo);
+            String mensaje = UtileriaFunciones.crearMensajeAuto(vehiculoSeleccionado.getTipo(), vehiculoSeleccionado.getPlaca(), vehiculoSeleccionado.getMarca(), vehiculoSeleccionado.getModelo(), vehiculoSeleccionado.getPrecio(), vehiculoSeleccionado.getKilometraje());
+            txtAreaInfoMiVeh.setText(mensaje);
+            UtileriaFunciones.verificarPertenencia(usuarioActual, vehiculoSeleccionado, btnEliminarVehiculo);
+            vehiculoSeleccionadoActual = vehiculoSeleccionado;
+        }
+    }
+    
+    private void limpiarSeleccion(){
+        txtAreaInfoMiVeh.setText("");
+        imgFileSeleccionado = null;
+        imMostrarMiVehiculo.setImage(null);
     }
     
     public void limpiarCombobox(){

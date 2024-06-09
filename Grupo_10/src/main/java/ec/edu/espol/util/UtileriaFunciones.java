@@ -8,6 +8,7 @@ import ec.edu.espol.controllers.DashboardController;
 import ec.edu.espol.grupo_10.App;
 import static ec.edu.espol.grupo_10.App.loadFXML;
 import ec.edu.espol.model.ArrayList;
+import ec.edu.espol.model.List;
 import ec.edu.espol.model.Usuario;
 import ec.edu.espol.model.Vehiculo;
 import static ec.edu.espol.model.Vehiculo.readFileSer;
@@ -112,7 +113,16 @@ public class UtileriaFunciones {
         String rutaCarpetaDestino = rutaProyecto + File.separator + "imagenesVehiculos";
         imgFile = new File(rutaCarpetaDestino, nombreImagen);
         Image imagen = new Image(imgFile.toURI().toString());
+        // Ajustando imagen con el método creado :)
+        imagen = ajustarTamañoImagen(imagen, imv.getFitWidth() ,imv.getFitHeight());
         imv.setImage(imagen);
+    }
+    
+    public static Image ajustarTamañoImagen(Image imagen, double ancho, double alto){
+        ImageView vistaPrevia = new ImageView(imagen);
+        vistaPrevia.setFitWidth(ancho);
+        vistaPrevia.setFitHeight(alto);
+        return vistaPrevia.snapshot(null, null);
     }
     
     public static ArrayList<String> getTipos(ArrayList<Vehiculo> vehiculos){
@@ -144,5 +154,47 @@ public class UtileriaFunciones {
             }
         }
         return modelos;
+    }
+    
+    public static int contarTipos(ArrayList<Vehiculo> vehiculos, String tipo){
+        int contabilizado = 0;
+        for (int i = 0; i < vehiculos.size(); i++){
+            if(vehiculos.get(i).getTipo().equals(tipo))
+                contabilizado++;
+        }
+        return contabilizado;
+    }
+    
+    public static void actualizar(Usuario usuario, Vehiculo vehiculo){
+        List<Vehiculo> vehiculosUsuario = usuario.getVehiculos();
+        vehiculosUsuario.addLast(vehiculo);
+        usuario.setVehiculos((ArrayList<Vehiculo>) vehiculosUsuario);
+    }
+    
+    public static void verificarPertenencia(Usuario usuario, Vehiculo vehiculo, Button btn){
+        if(vehiculo.getPropietario().getCorreo().equals(usuario.getCorreo())){
+            btn.setVisible(true);
+        } else{
+            btn.setVisible(false);
+        }      
+    }
+    
+    public static void eliminarMiVehiculo(Usuario usuario, Vehiculo vehiculo){
+        List<Vehiculo> vehiculos = Vehiculo.readFileSer();
+        for(int i = 0; i < vehiculos.size(); i++){
+            if(vehiculo.getPlaca().equals(vehiculos.get(i).getPlaca())){
+               vehiculos.remove(i);
+            }
+        }
+        
+        Vehiculo.saveListVehiculosSer((ArrayList<Vehiculo>) vehiculos);
+        
+        for(int i = 0; i < usuario.getVehiculos().size(); i++){
+            List<Vehiculo> vehiculosUsuario = usuario.getVehiculos();
+            if(vehiculo.getPlaca().equals(vehiculosUsuario.get(i).getPlaca())){
+                vehiculosUsuario.remove(i);
+            }
+            usuario.setVehiculos((ArrayList<Vehiculo>) vehiculosUsuario);
+        }
     }
 }

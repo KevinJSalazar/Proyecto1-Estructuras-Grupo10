@@ -71,7 +71,7 @@
                               </Label>
                               <Line endX="65.10000610351562" endY="-1.52587890625E-5" layoutX="117.0" layoutY="151.0" startX="-100.0" stroke="#eaedef" />
                               <Button fx:id="btnSeccionPrincipal" layoutX="10.0" layoutY="167.0" mnemonicParsing="false" onAction="#cambiarPestañas" prefHeight="30.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="🏠 Principal" />
-                              <Button fx:id="btnSeccionVer" layoutX="10.0" layoutY="197.0" mnemonicParsing="false" onAction="#cambiarPestañas" prefHeight="30.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="🚗 Mis vehículos" />
+                              <Button fx:id="btnSeccionVer" layoutX="10.0" layoutY="197.0" mnemonicParsing="false" onAction="#cambiarPestañas" prefHeight="30.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="🚗 Vehículos" />
                               <Button fx:id="btnSeccionAgregar" layoutX="10.0" layoutY="227.0" mnemonicParsing="false" onAction="#cambiarPestañas" prefHeight="30.0" prefWidth="180.0" styleClass="nav-btn" stylesheets="@dashboardDesign.css" text="✚ Agregar vehículo" />
                               <Text fill="#eaedef" layoutX="17.0" layoutY="436.0" onMouseClicked="#fnCerrarSesion" strokeType="OUTSIDE" strokeWidth="0.0" text="➲">
                                  <font>
@@ -227,7 +227,7 @@
                                                 <TableColumn fx:id="tvColKm" prefWidth="81.60003662109375" text="Km" />
                                             </columns>
                                           </TableView>
-                                          <Text fill="#1c2833" layoutX="119.0" layoutY="25.0" strokeType="OUTSIDE" strokeWidth="0.0" text="VEHÍCULOS REGISTRADOS">
+                                          <Text fill="#1c2833" layoutX="83.0" layoutY="24.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Vehículos en Optimus Prime Motors">
                                              <font>
                                                 <Font name="Arial Black" size="16.0" />
                                              </font>
@@ -243,7 +243,10 @@
                                           <ImageView fx:id="imMostrarMiVehiculo" fitHeight="166.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </AnchorPane>
-                                    <Button contentDisplay="CENTER" layoutX="254.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#fnEliminarVehiculo" prefHeight="26.0" prefWidth="178.0" style="-fx-background-color: #1c2833;" text="✗ Eliminar vehículo" textFill="WHITE" />
+                                    <Button fx:id="btnEliminarVehiculo" contentDisplay="CENTER" layoutX="254.0" layoutY="392.0" mnemonicParsing="false" onMouseClicked="#fnEliminarVehiculo" prefHeight="26.0" prefWidth="178.0" style="-fx-background-color: #1c2833;" text="✗ Eliminar vehículo" textFill="WHITE">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor></Button>
                                     <AnchorPane layoutX="228.0" layoutY="238.0" prefHeight="147.0" prefWidth="230.0">
                                        <children>
                                           <Text fx:id="txtAreaInfoMiVeh" layoutX="6.0" layoutY="27.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="218.13674926757812" />

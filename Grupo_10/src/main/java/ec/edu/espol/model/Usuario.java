@@ -116,6 +116,28 @@ public class Usuario implements Serializable{
         return clave;
     }
 
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public void setApellido(String apellido) {
+        this.apellido = apellido;
+    }
+
+    public void setCorreo(String correo) {
+        this.correo = correo;
+    }
+
+    public void setClave(String clave) {
+        this.clave = clave;
+    }
+
+    public void setVehiculos(ArrayList<Vehiculo> vehiculos) {
+        this.vehiculos = vehiculos;
+    }
+    
+    
+
     @Override
     public String toString(){
         return this.correo+"|"+this.clave;
