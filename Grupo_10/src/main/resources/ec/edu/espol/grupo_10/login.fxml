@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ec.edu.espol.controllers.LoginController">
+   <left>
+      <AnchorPane prefHeight="500.0" prefWidth="350.0" style="-fx-background-color: #1C2833;" BorderPane.alignment="CENTER">
+         <children>
+            <Text fill="#f2efef" layoutX="75.0" layoutY="266.0" strokeType="OUTSIDE" strokeWidth="0.0" text="OPTIMUS PRIME">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Text>
+            <Text fill="#fff8f8" layoutX="154.0" layoutY="225.0" strokeType="OUTSIDE" strokeWidth="0.0" text="🤖">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Text>
+            <Text fill="#f2efef" layoutX="122.0" layoutY="291.0" strokeType="OUTSIDE" strokeWidth="0.0" text="MOTORS">
+               <font>
+                  <Font name="System Bold" size="26.0" />
+               </font>
+            </Text>
+            <Text fill="#f2efef" layoutX="146.0" layoutY="323.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SINCE 2002">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Text>
+         </children>
+      </AnchorPane>
+   </left>
+   <center>
+      <AnchorPane prefHeight="500.0" prefWidth="358.0" BorderPane.alignment="CENTER">
+         <children>
+            <TextField fx:id="usuario" layoutX="117.0" layoutY="210.0" promptText="Usuario" style="-fx-background-color: transparent; -fx-border-color: #1C2833; -fx-border-width: 0px 0px 2px;">
+               <font>
+                  <Font size="10.0" />
+               </font></TextField>
+            <PasswordField fx:id="contraseña" layoutX="117.0" layoutY="251.0" promptText="Contraseña" style="-fx-background-color: transparent; -fx-border-color: #1C2833; -fx-border-width: 0px 0px 2px;">
+               <font>
+                  <Font size="10.0" />
+               </font></PasswordField>
+            <Button layoutX="108.0" layoutY="315.0" mnemonicParsing="false" onMouseClicked="#login" prefHeight="30.0" prefWidth="133.0" style="-fx-background-color: #1C2833;" text="Iniciar sesión" textFill="WHITE" />
+            <Hyperlink layoutX="115.0" layoutY="457.0" text="¿Olvidaste tu contraseña?" textFill="#1c2833">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Hyperlink>
+            <Hyperlink layoutX="135.0" layoutY="353.0" onMouseClicked="#fnRegistrar" text="Regístrate ahora" textFill="#1c2833">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Hyperlink>
+            <Text fill="#1c2833" layoutX="118.0" layoutY="157.0" strokeType="OUTSIDE" strokeWidth="0.0" text="BIENVENIDOS" textAlignment="CENTER">
+               <font>
+                  <Font name="Arial Rounded MT Bold" size="16.0" />
+               </font>
+            </Text>
+            <Text fill="#1c2833" layoutX="94.0" layoutY="116.0" strokeType="OUTSIDE" strokeWidth="0.0" text="૮ ˶ᵔ ᵕ ᵔ˶ ა">
+               <font>
+                  <Font size="40.0" />
+               </font>
+            </Text>
+            <Text fill="#1c2833" layoutX="79.0" layoutY="233.0" strokeType="OUTSIDE" strokeWidth="0.0" text="👤">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Text fill="#1c2833" layoutX="79.0" layoutY="274.0" strokeType="OUTSIDE" strokeWidth="0.0" text="🔑">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Text>
+            <Button layoutX="296.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#fnSalir" style="-fx-background-color: transparent;">
+               <graphic>
+                  <Text fill="#1c2833" strokeType="OUTSIDE" strokeWidth="0.0" text="✘">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Text>
+               </graphic>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+         </children>
+      </AnchorPane>
+   </center>
+</BorderPane>
